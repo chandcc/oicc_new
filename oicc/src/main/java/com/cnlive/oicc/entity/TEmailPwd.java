@@ -1,21 +1,22 @@
-package com.cnlive.oicc.bean;
-
+package com.cnlive.oicc.entity;
 import lombok.Data;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
+
 /**
 *
 *  @author author
 */
 @Data
-public class TEmailType implements Serializable {
+@Table(name = "t_email_pwd")
+public class TEmailPwd implements Serializable {
 
-    private static final long serialVersionUID = 1578365472229L;
+    private static final long serialVersionUID = 1578365469645L;
 
 
     /**
@@ -23,6 +24,8 @@ public class TEmailType implements Serializable {
     * 
     * isNullAble:0
     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
@@ -53,14 +56,7 @@ public class TEmailType implements Serializable {
     * 
     * isNullAble:1
     */
-    private String nickname;
-
-    /**
-    * 
-    * isNullAble:1
-    */
     private Timestamp insertDate;
-
 
 
 }

@@ -1,13 +1,29 @@
 package com.cnlive.oicc.controller;
 
 import com.alibaba.druid.util.StringUtils;
+import com.cnlive.oicc.entity.TEmailPwd;
+import com.cnlive.oicc.entity.TEmailType;
+import com.cnlive.oicc.bean.ResultBean;
+import com.cnlive.oicc.entity.TMember;
+import com.cnlive.oicc.service.MemberService;
+import com.cnlive.oicc.service.TEmailPwdService;
+import com.cnlive.oicc.service.TEmailTypeService;
+import com.cnlive.oicc.service.UserLogService;
+import com.cnlive.oicc.utils.CommonUtils;
 import com.cnlive.oicc.utils.Constants;
 import com.cnlive.oicc.utils.UnifyPay;
 import org.apache.log4j.Logger;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
+import org.thymeleaf.context.IWebContext;
+import org.thymeleaf.context.WebContext;
+import org.thymeleaf.spring5.view.ThymeleafViewResolver;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.net.URLDecoder;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -16,479 +32,487 @@ import java.util.Map;
 
 /**
  * API接口 api
- * 
  */
+
 @Controller
-@RequestMapping
-public class ApiServiceController   {
+public class ApiServiceController {
+    @Autowired
+    UserLogService userLogService;
+    @Autowired
+    MemberService memberService;
+    @Autowired
+    TEmailTypeService tEmailTypeService;
+    @Autowired
+    ThymeleafViewResolver thymeleafViewResolver;//用来输出页面的，一个接口既要返回数据又要返回页面的时候用
+    @Autowired
+    TEmailPwdService tEmailPwdService;
 
-	private Logger logger = Logger.getLogger(ApiServiceController.class);
-	@GetMapping("/login")
-	public String login() {
-		return "login";
-	}
+    private Logger logger = Logger.getLogger(ApiServiceController.class);
+
+    @GetMapping("/login")
+    public String login() {
+        return "login";
+    }
 
 
+    /**
+     * 统一异常处理页面
+     */
+    @RequestMapping("/500")
+    public String error() {
+        return "common/500";
+    }
 
-//	/**
-//	 * 统一异常处理页面
-//	 */
-//	public String error() {
-//		return "common/500";
-//	}
-//
-//	/**
-//	 * 登录
-//	 *
-//	 */
-//	@SuppressWarnings("unchecked")
-//	@Clear
-//	public void loginValidate() {
-//		String userName = null;
-//		String userId = null;
-//		try {
-//			userName = getPara("userName");
-//			String userPwd = getPara("userPwd");
-//			String uid = getCookie("uid","oicc");
-//			String frmId = getPara("frmId");
-//			String vCode = getPara("vCode");
-//			String type = getPara("type");
-//			Map<String, Object> resMap = new HashMap<String, Object>();
-//			String errcode = "";
-//			String errorMsg="";
-//			Date date1 = new Date();
-//			long time1 = date1.getTime();
-//			if(StringUtils.isEmpty(vCode)){//密码登录
-//				 resMap = UserLogService.me.sendLoginRequest(userName, userPwd, uid, frmId);
-//				 errcode = String.valueOf(resMap.get("errorCode"));
-//				 errorMsg = String.valueOf(resMap.get("errorMessage"));
-//			}else{//短信快捷登录
-//				 resMap = UserLogService.me.sendMsgLoginRequest(userName, vCode, uid, frmId);
-//				 errcode = String.valueOf(resMap.get("errorCode"));
-//				 errorMsg = String.valueOf(resMap.get("errorMessage"));
-//			}
-//			Date date2 = new Date();
-//			long time2 = date2.getTime();
-//			logger.info("登录请求时间====="+(time2-time1));
-//			Map<String, String> data = (Map<String, String>) resMap.get("data");
-//			if ("0".equals(errcode)) {
-//				UserLogService.me.setUserLoginCookie(data, getResponse());
-//				userId = data.get("uid");
-//				String token = data.get("token");
-//
-//				Record member = new Record();
-//				member.set("id", Integer.parseInt(userId));
-//				member.set("token", token);
-//				member.set("mobile", userName);
-//				member.set("encryptID", UnifyPay.encrypt(userId));
-//				member.set("nickName", URLDecoder.decode(data.get("nickName"), "utf-8"));
-//				if("0".equals(type)){
-//					member.set("wcbd", 1);
-//				}else if("1".equals(type)){
-//					member.set("ycip", 1);
-//				}else if("2".equals(type)){
-//					member.set("jscy", 1);
-//				}
-//				Member.me.saveOrUpdate(member,type);
-//				renderJson(new ResultBean(0, "登录成功", null));
-//			} else {
-//					renderJson(new ResultBean(-1, errorMsg, null));
-//			}
-//		} catch (Exception e) {
-//			logger.error("登录异常,用户名:" + userName, e);
-//			renderJson(new ResultBean(-1, "登录异常", null));
-//		}
-//
-//	}
-//
-//
-//	/**
-//	 * 验证是否登录
-//	 */
-//	@Clear
-//	public void isLogin() {
-//		String uid = "";
-//		try {
-//			 uid = getCookie("cnliveUserId");
-//			Member member = Member.me.findByEncryptID(uid);
-//			if(member!=null){
-//				String type = getPara(0);
-//				if(!StringUtils.isEmpty(type)){
-//					String tableName="";
-//					if("0".equals(type)){
-//						tableName="wcbd";
-//					}else if("1".equals(type)){
-//						tableName="ycip";
-//					}else if("2".equals(type)){
-//						tableName="jscy";
-//					}
-//					 Object tableValue = member.get(tableName);
-//					if(tableValue==null||"0".equals(tableValue.toString())){
-//						member.set(tableName, 1);
-//						Record record = new Record();
-//						record.setColumns(member);
-//						Member.me.saveOrUpdate(record, type);
-//					}
-//				}
-//				Record record = new Record();
-//				//record.set("id", member.get("id"));
-//				record.set("nickName", member.get("nickName"));
-//				renderJson(new ResultBean(0, "已登录", record));
-//			}else{
-//				renderJson(new ResultBean(-1, "未登录", null));
-//			}
-//		} catch (Exception e) {
-//			logger.error("验证登录异常,token=:"+uid, e);
-//			renderJson(new ResultBean(-1, "验证登录异常", null));
-//		}
-//
-//	}
-//
-//
-//
-//	/**
-//	 * 登出
-//	 */
-//	@Clear
-//	public void outLogin() {
-//		try {
-//			UserLogService.me.delteUserLoginCookie(getResponse());
-//			renderJson(new ResultBean(0, "登出成功", null));
-//		} catch (Exception e) {
-//			logger.error("登出异常", e);
-//			renderJson(new ResultBean(-1, "登出异常", null));
-//		}
-//
-//	}
-//
-//
-//
-//	/**
-//	 * 验证注册手机号
-//	 */
-//	@Clear
-//	public void validateMobile() {
-//		String mobile = getPara("mobile");
-//		try {
-//			if (StringUtils.isEmpty(mobile))
-//				mobile = String.valueOf(getSession().getAttribute("userName"));
-//
-//			Map<String, Object> response = UserLogService.me.sendMobileVcode(mobile);
-//			String errorCode = String.valueOf(response.get("errorCode"));
-//			String errorMsg = String.valueOf(response.get("errorMessage"));
-//
-//			if ("0".equals(errorCode)) {
-//				getSession().setAttribute("userName", mobile);
-//				getSession().setAttribute("registStep", "2");
-//				renderJson(new ResultBean(0, "发送验证码成功", null));
-//			} else {
-//				renderJson(new ResultBean(-1, errorMsg, null));
-//			}
-//		} catch (Exception e) {
-//			logger.error("验证手机号失败,mobile:" + mobile, e);
-//			renderJson(new ResultBean(-1, "服务异常，请稍后重试", null));
-//		}
-//	}
-//
-//	/**
-//	 * 注册
-//	 *
-//	 */
-//	@SuppressWarnings("unchecked")
-//	@Clear
-//	public void registValidate() {
-//		String type = getPara("type");
-//		String vCode = getPara("vCode");
-//		String userPwd = getPara("userPwd");
-//		String mobile = getPara("mobile");
-//		String uuid = getCookie("uid","oicc");
-//		String frmId = getPara("frmId");
-//		String nickname = getPara("nickname");
-//		try {
-//			if(Constants.EMAIL_TYPE.equals(type)){
-//				renderJson(UserLogService.me.regByEmail(mobile, userPwd,nickname));
-//			}else{
-//				Map<String, Object> reponse = UserLogService.me.sendRegistRequest(mobile, userPwd, vCode, uuid, frmId);
-//				String errorCode = String.valueOf(reponse.get("errorCode"));
-//				String errorMsg = String.valueOf(reponse.get("errorMessage"));
-//
-//				if ("0".equals(errorCode)) {
-//					Map<String, String> data = (Map<String, String>) reponse.get("data");
-//					UserLogService.me.setUserLoginCookie(data, getResponse());// 设置cookie
-//
-//					// 保存会员信息
-//					Integer userId = Integer.parseInt(data.get("uid"));
-//					Record member = new Record();
-//					member.set("id", userId);
-//					member.set("nickName", nickname);
-//					member.set("token", data.get("token"));
-//					member.set("mobile", data.get("mobile"));
-//					Member.me.saveOrUpdate(member,null);
-//
-//					getSession().setAttribute("registStep", "3");
-//
-//					renderJson(new ResultBean(0, "注册成功", null));
-//				} else {
-//					renderJson(new ResultBean(-1, errorMsg, null));
-//				}
-//			}
-//
-//		} catch (Exception e) {
-//			logger.error("注册失败,mobile:" + mobile, e);
-//			renderJson(new ResultBean(-1, "服务异常，请稍后重试", null));
-//		}
-//	}
-//
-//
-//
-//	/**
-//	 * 重置密码
-//	 *
-//	 */
-//	@Clear
-//	public void resetPwd() {
-//		String mobile = getPara("mobile");
-//		try {
-//			String vCode = getPara("vCode");
-//			String userPwd = getPara("userPwd");
-//			String type=getPara("type");
-//			if(Constants.EMAIL_TYPE.equals(type)){
-//				renderJson(UserLogService.me.resetPwd(userPwd, mobile));
-//			}else{
-//				if (StringUtils.isEmpty(mobile))
-//					mobile = String.valueOf(getSession().getAttribute("userName"));
-//
-//				Map<String, String> response = UserLogService.me.resetPwd(vCode, userPwd, mobile);
-//
-//				String errorCode = response.get("errorCode");
-//				String errorMsg = response.get("errorMessage");
-//
-//				if ("0".equals(errorCode)) {
-//					UserLogService.me.delteUserLoginCookie(getResponse());
-//					renderJson(new ResultBean(0, "重置密码成功", null));
-//
-//				} else {
-//					renderJson(new ResultBean(-1, errorMsg, null));
-//				}
-//			}
-//
-//
-//		} catch (Exception e) {
-//			logger.error("修改密码失败,mobile:" + mobile, e);
-//			renderJson(new ResultBean(-1, "服务异常,请稍后重试", null));
-//		}
-//	}
-//
-//	/**
-//	 * 发送重置密码手机验证码
-//	 *
-//	 */
-//	@Clear
-//	public void sendResetPwdVcode() {
-//		String mobile = getPara("mobile");
-//		try {
-//			if (StringUtils.isEmpty(mobile))
-//				mobile = String.valueOf(getSession().getAttribute("userName"));
-//			Map<String, String> response = UserLogService.me.sendResetPwdVcode(mobile);
-//			String errorCode = response.get("errorCode");
-//			String errorMsg = response.get("errorMessage");
-//
-//			if ("0".equals(errorCode))
-//				renderJson(new ResultBean(0, "发送成功", null));
-//			else
-//				renderJson(new ResultBean(-1, errorMsg, null));
-//
-//		} catch (Exception e) {
-//			logger.error("重置密码发送验证码失败,mobile:" + mobile, e);
-//			renderJson(new ResultBean(-1, "服务异常,请稍后重试", null));
-//		}
-//	}
-//
-//	/**
-//	 * 发送短信快捷登录手机验证码
-//	 *
-//	 */
-//	@Clear
-//	public void sendResetMsgLoginVcode() {
-//		String mobile = getPara("mobile");
-//		try {
-//			if (StringUtils.isEmpty(mobile))
-//			mobile = String.valueOf(getSession().getAttribute("userName"));
-//			Map<String, String> response = UserLogService.me.sendResetLoginMsgVcode(mobile);
-//			String errorCode = response.get("errorCode");
-//			String errorMsg = response.get("errorMessage");
-//
-//			if ("0".equals(errorCode))
-//				renderJson(new ResultBean(0, "发送成功", null));
-//			else
-//				renderJson(new ResultBean(-1, errorMsg, null));
-//
-//		} catch (Exception e) {
-//			logger.error("短信登录发送验证码失败,mobile:" + mobile, e);
-//			renderJson(new ResultBean(-1, "服务异常,请稍后重试", null));
-//		}
-//	}
-//
-//	/**
-//	 * 激活邮箱，注册
-//	 */
-//	@Clear
-//	public void emailEffect() {
-//		String email = getPara("email");
-//		String vcode = getPara("vcode");
-//		try {
-//			if(StringUtils.isEmpty(email)||StringUtils.isEmpty(vcode)){
-//				//setAttr("msg","激活链接无效，请重新申请注册");
-//				setAttr("msg","The activation link is invalid, please re-apply for registration");
-//			}else{
-//				long date = new Date().getTime()-1000*3600*24L;
-//				Timestamp timestamp = new Timestamp(date);
-//				Record record = Db.findFirst("select * from t_email_type where email=? and vcode=? and insertDate>?",email,vcode,timestamp);
-//				if(record!=null){
-//					if(record.getInt("type")==Constants.ACTIVE){
-//						//setAttr("msg","您的账号已激活，请勿重复请求");
-//						setAttr("msg","Your account has been activated. Please do not repeat the request");
-//					}else{
-//						String uid = getCookie("uid","oicc");
-//						Map<String, Object> reponse = UserLogService.me.sendRegistRequest(email, record.getStr("userPwd"), null, uid, "oicc");
-//						String errorCode = String.valueOf(reponse.get("errorCode"));
-//					//	String errorMsg = String.valueOf(reponse.get("errorMessage"));
-//						if ("0".equals(errorCode)) {
-//							Map<String, String> data = (Map<String, String>) reponse.get("data");
-//							UserLogService.me.setUserLoginCookie(data, getResponse());// 设置cookie
-//							// 保存会员信息
-//							Integer userId = Integer.parseInt(data.get("uid"));
-//							Record member = new Record();
-//							member.set("id", userId);
-//							member.set("nickName", record.get("nickname"));
-//							member.set("token", data.get("token"));
-//							member.set("mobile",email);
-//							Member.me.saveOrUpdate(member,null);
-//							getSession().setAttribute("registStep", "3");
-//							//更新邮箱激活状态
-//							record.set("type", Constants.ACTIVE);
-//							Db.update("t_email_type",record);
-//							//setAttr("msg","激活成功");
-//							setAttr("msg","Activate the success");
-//						}else{
-//							String msg = getMsg(errorCode);
-//							setAttr("msg",msg);
-//						}
-//					}
-//				}else{
-//					setAttr("msg","The activation link is invalid, please re-apply for registration");
-//				}
-//
-//			}
-//			render("emailMsg.jsp");
-//		} catch (Exception e) {
-//			renderJson(new ResultBean(-1, "Service exception, please try again later", null));
-//		}
-//	}
-//
-//
-//	/**
-//	 * 激活邮箱，重置密码
-//	 */
-//	@Clear
-//	public void emailPwd() {
-//		String email = getPara("email");
-//		String vcode = getPara("vcode");
-//		try {
-//			if(StringUtils.isEmpty(email)||StringUtils.isEmpty(vcode)){
-//				//setAttr("msg","该链接无效");
-//				setAttr("msg","The activation link is invalid, please re-apply for registration");
-//			}else{
-//				long date = new Date().getTime()-1000*3600*24L;
-//				Timestamp timestamp = new Timestamp(date);
-//				Record record = Db.findFirst("select * from t_email_pwd where email=? and vcode=? and insertDate>?",email,vcode,timestamp);
-//				if(record!=null){
-//					if(record.getInt("type")==Constants.ACTIVE){
-//						//setAttr("msg","您的密码已重置，请勿重复请求");
-//						setAttr("msg","Your password has been reset. Do not repeat the request");
-//					}else{
-//						Map<String, String> response = UserLogService.me.resetPwdByEmail(record.getStr("userPwd"), email);
-//						String errorCode = response.get("errorCode");
-//					//	String errorMsg = response.get("errorMessage");
-//						if ("0".equals(errorCode)) {
-//							UserLogService.me.delteUserLoginCookie(getResponse());
-//							record.set("type",Constants.ACTIVE);
-//							Db.update("t_email_pwd",record);
-//							//setAttr("msg","重置密码成功");
-//							setAttr("msg","Reset password success");
-//						}else{
-//							String msg = getMsg(errorCode);
-//							setAttr("msg",msg);
-//						}
-//					}
-//				}else{
-//					//setAttr("msg","链接无效");
-//					setAttr("msg","The activation link is invalid, please re-apply for registration");
-//				}
-//
-//			}
-//			render("emailMsg.jsp");
-//		} catch (Exception e) {
-//			renderJson(new ResultBean(-1, "Service exception, please try again later", null));
-//		}
-//	}
-//
-//
-//	/**
-//	 * 用户云接口，通过code获取英文提示
-//	 * @param code
-//	 * @return
-//	 */
-//	public static String getMsg(String code){
-//		String result = "";
-//		switch (code) {
-//		//邮箱格式错误
-//		case "41017":
-//			result = "Email format error";
-//			break;
-//		//密码为6-20位字母或数字
-//		case "41004":
-//			result = "Passwords are 6-20 letters or Numbers";
-//			break;
-//		//密码不可与账号相同
-//		case "41051":
-//			result = "The password must not be the same as the account number";
-//			break;
-//		//密码不可为连续的字符串
-//		case "41052":
-//			result = "Passwords must not be consecutive strings";
-//			break;
-//		//密码不可为连续相同的字符串
-//		case "41053":
-//			result = "The password must not be the same string";
-//			break;
-//		//该邮箱未注册
-//		case "41054":
-//			result = "This mailbox is not registered";
-//			break;
-//		//用户名为手机号或邮箱
-//		case "41001":
-//			result = "The username must be the mailbox";
-//			break;
-//		//邮箱不能超过50位
-//		case "41003":
-//			result = "The mailbox must not exceed 50";
-//			break;
-//		//该邮箱已存在
-//		case "41007":
-//			result = "This mailbox already exists";
-//			break;
-//		//该昵称已存在
-//		case "41008":
-//			result = "The nickname already exists";
-//			break;
-//		default:
-//			result = "The activation link is invalid, please re-apply for registration";
-//			break;
-//		}
-//
-//		return result;
-//	}
-//
+    /**
+     * 登录
+     */
+    @RequestMapping("/")
+    @ResponseBody
+    public ResultBean loginValidate(HttpServletRequest request, HttpServletResponse response) {
+        String userName = null;
+        String userId = null;
+        try {
+            userName = request.getParameter("userName");
+            String userPwd = request.getParameter("userPwd");
+            Cookie[] cookies = request.getCookies();
+            String uid = CommonUtils.getCookieValue("uid", cookies) != null ? CommonUtils.getCookieValue("uid", cookies) : "oicc";
+            String frmId = request.getParameter("frmId");
+            String vCode = request.getParameter("vCode");
+            String type = request.getParameter("type");
+            Map<String, Object> resMap = new HashMap<String, Object>();
+            String errcode = "";
+            String errorMsg = "";
+            Date date1 = new Date();
+            long time1 = date1.getTime();
+            if (StringUtils.isEmpty(vCode)) {//密码登录
+                resMap = userLogService.sendLoginRequest(userName, userPwd, uid, frmId);
+                errcode = String.valueOf(resMap.get("errorCode"));
+                errorMsg = String.valueOf(resMap.get("errorMessage"));
+            } else {//短信快捷登录
+                resMap = userLogService.sendMsgLoginRequest(userName, vCode, uid, frmId);
+                errcode = String.valueOf(resMap.get("errorCode"));
+                errorMsg = String.valueOf(resMap.get("errorMessage"));
+            }
+            Date date2 = new Date();
+            long time2 = date2.getTime();
+            logger.info("登录请求时间=====" + (time2 - time1));
+            Map<String, String> data = (Map<String, String>) resMap.get("data");
+            if ("0".equals(errcode)) {
+                userLogService.setUserLoginCookie(data, response);
+                userId = data.get("uid");
+                String token = data.get("token");
+                TMember tmember = new TMember();
+                tmember.setId(Integer.parseInt(userId));
+                tmember.setToken(token);
+                tmember.setMobile(userName);
+                tmember.setEncryptID(UnifyPay.encrypt(userId));
+                tmember.setNickName(URLDecoder.decode(data.get("nickName"), "utf-8"));
+                if ("0".equals(type)) {
+                    tmember.setWcbd(1);
+                } else if ("1".equals(type)) {
+                    tmember.setYcip(1);
+                } else if ("2".equals(type)) {
+                    tmember.setJscy(1);
+                }
+                memberService.saveOrUpdate(tmember, type);
+                return new ResultBean(0, "登录成功", null);
+            } else {
+                return new ResultBean(-1, errorMsg, null);
+            }
+        } catch (Exception e) {
+            logger.error("登录异常,用户名:" + userName, e);
+            return new ResultBean(-1, "登录异常", null);
+        }
+
+    }
+
+
+    /**
+     * 验证是否登录
+     */
+    @RequestMapping("isLogin/{type}")
+    @ResponseBody
+    public ResultBean isLogin(HttpServletRequest request, HttpServletResponse response, @PathVariable String type) {
+        String uid = "";
+        try {
+            Cookie[] cookies = request.getCookies();
+            uid = CommonUtils.getCookieValue("cnliveUserId", cookies);
+
+            TMember member = memberService.findByEncryptID(uid);
+            if (member != null) {
+                Object tableValue = null;
+                if (!StringUtils.isEmpty(type)) {
+                    String tableName = "";
+                    if ("0".equals(type)) {
+                        tableName = "wcbd";
+                        tableValue = member.getWcbd();
+                        if (tableValue == null || "0".equals(tableValue.toString())) {
+                            member.setWcbd(1);
+                            memberService.saveOrUpdate(member, type);
+                        }
+                    } else if ("1".equals(type)) {
+                        tableName = "ycip";
+                        tableValue = member.getYcip();
+                        if (tableValue == null || "0".equals(tableValue.toString())) {
+                            member.setYcip(1);
+                            memberService.saveOrUpdate(member, type);
+                        }
+                    } else if ("2".equals(type)) {
+                        tableName = "jscy";
+                        tableValue = member.getJscy();
+                        if (tableValue == null || "0".equals(tableValue.toString())) {
+                            member.setJscy(1);
+                            memberService.saveOrUpdate(member, type);
+                        }
+                    }
+
+                }
+                return new ResultBean(0, "已登录", member);
+            } else {
+                return new ResultBean(-1, "未登录", null);
+            }
+        } catch (Exception e) {
+            logger.error("验证登录异常,token=:" + uid, e);
+            return new ResultBean(-1, "验证登录异常", null);
+        }
+
+    }
+
+
+    /**
+     * 登出
+     */
+    @RequestMapping()
+    @ResponseBody
+    public ResultBean outLogin(HttpServletRequest request, HttpServletResponse response) {
+        try {
+            userLogService.delteUserLoginCookie(response);
+            return new ResultBean(0, "登出成功", null);
+        } catch (Exception e) {
+            logger.error("登出异常", e);
+            return new ResultBean(-1, "登出异常", null);
+        }
+
+    }
+
+
+    /**
+     * 验证注册手机号
+     */
+    @RequestMapping("validateMobile")
+    @ResponseBody
+    public ResultBean validateMobile(HttpServletRequest request, HttpServletResponse response, String mobile) {
+
+        try {
+            if (StringUtils.isEmpty(mobile))
+                mobile = String.valueOf(request.getSession().getAttribute("userName"));
+
+            Map<String, Object> map = UserLogService.me.sendMobileVcode(mobile);
+            String errorCode = String.valueOf(map.get("errorCode"));
+            String errorMsg = String.valueOf(map.get("errorMessage"));
+
+            if ("0".equals(errorCode)) {
+                request.getSession().setAttribute("userName", mobile);
+                request.getSession().setAttribute("registStep", "2");
+                return new ResultBean(0, "发送验证码成功", null);
+            } else {
+                return new ResultBean(-1, errorMsg, null);
+            }
+        } catch (Exception e) {
+            logger.error("验证手机号失败,mobile:" + mobile, e);
+            return new ResultBean(-1, "服务异常，请稍后重试", null);
+        }
+    }
+
+    /**
+     * 注册
+     */
+    @SuppressWarnings("unchecked")
+    @RequestMapping("registValidate")
+    @ResponseBody
+    public ResultBean registValidate(HttpServletRequest request, HttpServletResponse response, String type, String vCode, String userPwd, String mobile, String uuid, String frmId, String nickname) {
+        try {
+            if (Constants.EMAIL_TYPE.equals(type)) {
+                return userLogService.regByEmail(mobile, userPwd, nickname);
+            } else {
+                Map<String, Object> reponse = UserLogService.me.sendRegistRequest(mobile, userPwd, vCode, uuid, frmId);
+                String errorCode = String.valueOf(reponse.get("errorCode"));
+                String errorMsg = String.valueOf(reponse.get("errorMessage"));
+
+                if ("0".equals(errorCode)) {
+                    Map<String, String> data = (Map<String, String>) reponse.get("data");
+                    userLogService.setUserLoginCookie(data, response);// 设置cookie
+
+                    // 保存会员信息
+                    Integer userId = Integer.parseInt(data.get("uid"));
+                    TMember tMember = new TMember();
+                    tMember.setId(userId);
+                    tMember.setNickName(nickname);
+                    tMember.setToken(data.get("token"));
+                    tMember.setMobile(data.get("mobile"));
+
+                    memberService.saveOrUpdate(tMember, null);
+
+                    request.getSession().setAttribute("registStep", "3");
+
+                    return new ResultBean(0, "注册成功", null);
+                } else {
+                    return new ResultBean(-1, errorMsg, null);
+                }
+            }
+
+        } catch (Exception e) {
+            logger.error("注册失败,mobile:" + mobile, e);
+            return new ResultBean(-1, "服务异常，请稍后重试", null);
+        }
+    }
+
+
+    /**
+     * 重置密码
+     */
+    @RequestMapping("resetPwd")
+    @ResponseBody
+    public ResultBean resetPwd(HttpServletRequest request, HttpServletResponse response, String mobile, String vCode, String userPwd, String type) {
+        try {
+            if (Constants.EMAIL_TYPE.equals(type)) {
+                return userLogService.resetPwd(userPwd, mobile);
+            } else {
+                if (StringUtils.isEmpty(mobile))
+                    mobile = String.valueOf(request.getSession().getAttribute("userName"));
+
+                Map<String, String> map = userLogService.resetPwd(vCode, userPwd, mobile);
+
+                String errorCode = map.get("errorCode");
+                String errorMsg = map.get("errorMessage");
+
+                if ("0".equals(errorCode)) {
+                    userLogService.delteUserLoginCookie(response);
+                    return new ResultBean(0, "重置密码成功", null);
+
+                } else {
+                    return new ResultBean(-1, errorMsg, null);
+                }
+            }
+
+
+        } catch (Exception e) {
+            logger.error("修改密码失败,mobile:" + mobile, e);
+            return new ResultBean(-1, "服务异常,请稍后重试", null);
+        }
+    }
+
+    /**
+     * 发送重置密码手机验证码
+     */
+    @RequestMapping("sendResetPwdVcode")
+    @ResponseBody
+    public ResultBean sendResetPwdVcode(HttpServletRequest request, HttpServletResponse response, String mobile) {
+        try {
+            if (StringUtils.isEmpty(mobile))
+                mobile = String.valueOf(request.getSession().getAttribute("userName"));
+            Map<String, String> map = userLogService.sendResetPwdVcode(mobile);
+            String errorCode = map.get("errorCode");
+            String errorMsg = map.get("errorMessage");
+
+            if ("0".equals(errorCode))
+                return new ResultBean(0, "发送成功", null);
+            else
+                return new ResultBean(-1, errorMsg, null);
+
+        } catch (Exception e) {
+            logger.error("重置密码发送验证码失败,mobile:" + mobile, e);
+            return new ResultBean(-1, "服务异常,请稍后重试", null);
+        }
+    }
+
+    /**
+     * 发送短信快捷登录手机验证码
+     */
+    @RequestMapping("sendResetMsgLoginVcode")
+    public ResultBean sendResetMsgLoginVcode(HttpServletRequest request, HttpServletResponse response, String mobile) {
+        try {
+            if (StringUtils.isEmpty(mobile))
+                mobile = String.valueOf(request.getSession().getAttribute("userName"));
+            Map<String, String> map = userLogService.sendResetLoginMsgVcode(mobile);
+            String errorCode = map.get("errorCode");
+            String errorMsg = map.get("errorMessage");
+
+            if ("0".equals(errorCode))
+                return new ResultBean(0, "发送成功", null);
+            else
+                return new ResultBean(-1, errorMsg, null);
+
+        } catch (Exception e) {
+            logger.error("短信登录发送验证码失败,mobile:" + mobile, e);
+            return new ResultBean(-1, "服务异常,请稍后重试", null);
+        }
+    }
+
+    /**
+     * 激活邮箱，注册
+     */
+    @RequestMapping("emailEffect")
+    @ResponseBody
+    public String emailEffect(HttpServletRequest request, HttpServletResponse response, String email, String vcode, Model model) {
+        try {
+            if (StringUtils.isEmpty(email) || StringUtils.isEmpty(vcode)) {
+                //setAttr("msg","激活链接无效，请重新申请注册");
+                request.setAttribute("msg", "The activation link is invalid, please re-apply for registration");
+            } else {
+                long date = new Date().getTime() - 1000 * 3600 * 24L;
+                Timestamp timestamp = new Timestamp(date);
+                TEmailType temailType = tEmailTypeService.findTemailType(email, vcode, timestamp);
+                if (temailType != null) {
+                    if (temailType.getType() == Constants.ACTIVE) {
+                        //setAttr("msg","您的账号已激活，请勿重复请求");
+                        request.setAttribute("msg", "Your account has been activated. Please do not repeat the request");
+                    } else {
+
+                        Cookie[] cookies = request.getCookies();
+                        String uid = CommonUtils.getCookieValue("uid", cookies) != null ? CommonUtils.getCookieValue("uid", cookies) : "oicc";
+                        Map<String, Object> reponse = userLogService.sendRegistRequest(email, temailType.getUserPwd(), null, uid, "oicc");
+                        String errorCode = String.valueOf(reponse.get("errorCode"));
+                        //	String errorMsg = String.valueOf(reponse.get("errorMessage"));
+                        if ("0".equals(errorCode)) {
+                            Map<String, String> data = (Map<String, String>) reponse.get("data");
+                            userLogService.setUserLoginCookie(data, response);// 设置cookie
+                            // 保存会员信息
+                            Integer userId = Integer.parseInt(data.get("uid"));
+                            TMember tMember = new TMember();
+                            tMember.setId(userId);
+                            tMember.setNickName(temailType.getNickname());
+                            tMember.setToken(data.get("token"));
+                            tMember.setMobile(email);
+                            memberService.saveOrUpdate(tMember, null);
+                            request.getSession().setAttribute("registStep", "3");
+                            //更新邮箱激活状态
+                            temailType.setType(Constants.ACTIVE);
+                            boolean update = tEmailTypeService.update(temailType);
+                            if (update == true) {
+                                request.setAttribute("msg", "Activate the success");
+                            }
+                        } else {
+                            String msg = getMsg(errorCode);
+                            request.setAttribute("msg", msg);
+                        }
+                    }
+                } else {
+                    request.setAttribute("msg", "The activation link is invalid, please re-apply for registration");
+                }
+
+            }
+            IWebContext ctx = new WebContext(request, response, request.getServletContext(), request.getLocale(), model.asMap());
+            return thymeleafViewResolver.getTemplateEngine().process("emailMsg", ctx);
+        } catch (Exception e) {
+            return "{\"code\":\"-1\",\"message\":\"Service exception, please try again later\",\"data\" :\" \"}";
+        }
+    }
+
+
+    /**
+     * 激活邮箱，重置密码
+     */
+    @RequestMapping("emailPwd")
+    @ResponseBody
+    public String emailPwd(HttpServletRequest request, HttpServletResponse response, String email, String vcode,Model model) {
+        try {
+            if (StringUtils.isEmpty(email) || StringUtils.isEmpty(vcode)) {
+                //setAttr("msg","该链接无效");
+                request.setAttribute("msg", "The activation link is invalid, please re-apply for registration");
+            } else {
+                long date = new Date().getTime() - 1000 * 3600 * 24L;
+                Timestamp timestamp = new Timestamp(date);
+                TEmailPwd temailPwd = tEmailPwdService.findTemailPwd(email, vcode, timestamp);
+                if (temailPwd != null) {
+                    if (temailPwd.getType() == Constants.ACTIVE) {
+                        //setAttr("msg","您的密码已重置，请勿重复请求");
+                        request.setAttribute("msg", "Your password has been reset. Do not repeat the request");
+                    } else {
+                        Map<String, String> map = userLogService.resetPwdByEmail(temailPwd.getUserPwd(), email);
+                        String errorCode = map.get("errorCode");
+                        //	String errorMsg = response.get("errorMessage");
+                        if ("0".equals(errorCode)) {
+                            userLogService.delteUserLoginCookie(response);
+                            temailPwd.setType(Constants.ACTIVE);
+                            tEmailPwdService.update(temailPwd);
+                            //setAttr("msg","重置密码成功");
+                            request.setAttribute("msg", "Reset password success");
+                        } else {
+                            String msg = getMsg(errorCode);
+                            request.setAttribute("msg", msg);
+                        }
+                    }
+                } else {
+                    //setAttr("msg","链接无效");
+                    request.setAttribute("msg", "The activation link is invalid, please re-apply for registration");
+                }
+
+            }
+            IWebContext ctx = new WebContext(request, response, request.getServletContext(), request.getLocale(), model.asMap());
+            return thymeleafViewResolver.getTemplateEngine().process("emailMsg", ctx);
+        } catch (Exception e) {
+            return "{\"code\":\"-1\",\"message\":\"Service exception, please try again later\",\"data\" :\" \"}";
+        }
+    }
+
+
+    /**
+     * 用户云接口，通过code获取英文提示
+     *
+     * @param code
+     * @return
+     */
+    public static String getMsg(String code) {
+        String result = "";
+        switch (code) {
+            //邮箱格式错误
+            case "41017":
+                result = "Email format error";
+                break;
+            //密码为6-20位字母或数字
+            case "41004":
+                result = "Passwords are 6-20 letters or Numbers";
+                break;
+            //密码不可与账号相同
+            case "41051":
+                result = "The password must not be the same as the account number";
+                break;
+            //密码不可为连续的字符串
+            case "41052":
+                result = "Passwords must not be consecutive strings";
+                break;
+            //密码不可为连续相同的字符串
+            case "41053":
+                result = "The password must not be the same string";
+                break;
+            //该邮箱未注册
+            case "41054":
+                result = "This mailbox is not registered";
+                break;
+            //用户名为手机号或邮箱
+            case "41001":
+                result = "The username must be the mailbox";
+                break;
+            //邮箱不能超过50位
+            case "41003":
+                result = "The mailbox must not exceed 50";
+                break;
+            //该邮箱已存在
+            case "41007":
+                result = "This mailbox already exists";
+                break;
+            //该昵称已存在
+            case "41008":
+                result = "The nickname already exists";
+                break;
+            default:
+                result = "The activation link is invalid, please re-apply for registration";
+                break;
+        }
+
+        return result;
+    }
+
 
 }

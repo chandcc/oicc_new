@@ -1,17 +1,19 @@
-package com.cnlive.oicc.bean;
+package com.cnlive.oicc.entity;
 import lombok.Data;
 
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.List;
+
 /**
 *
 *  @author author
 */
 @Data
+@Table(name = "t_user")
 public class TUser implements Serializable {
 
     private static final long serialVersionUID = 1578365480865L;
@@ -21,6 +23,8 @@ public class TUser implements Serializable {
     * 
     * isNullAble:0
     */
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
 
     /**
