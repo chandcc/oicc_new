@@ -15,8 +15,8 @@
                     <ul class="info-menu right-links list-inline list-unstyled">
                         <li class="profile">
                             <a href="#" data-toggle="dropdown" class="toggle">
-                                <img src="../../../static/data/profile/profile.png" alt="user-image" class="img-circle img-inline">
-                                <span>${empty userSession.name ? 'user':userSession.name}<i class="fa fa-angle-down"></i></span>
+                                <img src="../../../data/profile/profile.png" alt="user-image" class="img-circle img-inline">
+                                <span th:if="${userSession != null}" th:text="${userSession.name}"> userSession<i class="fa fa-angle-down"></i></span>
                             </a>
                             <ul class="dropdown-menu profile animated fadeIn">
                                 <li>

@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>鄂尔多斯峰会后台管理系统</title>
-<%@include file="../common/res.html"%>
+	<div th:replace="../templates/common/res :: html"></div>
 </head>
 <body class=" ">
 	<!-- START TOPBAR -->
 	<div class='page-topbar '>
 		<div class='logo-area'></div>
 		<!-- head start -->
-		<%@include file="../common/head.html"%>
+		<div th:replace="../templates/common/head :: html"></div>
 		<!-- head end -->
 	</div>
 	<!-- END TOPBAR -->
@@ -20,7 +20,7 @@
 		<div class="page-sidebar ">
 			<!-- MAIN MENU - START -->
 			<!-- <c:set var="tindex" value="2"/> -->
-			<%@include file="../common/menu.html"%>
+			<div th:replace="../templates/common/menu :: html"></div>
 			<!-- MAIN MENU - END -->
 		</div>
 		<!--  SIDEBAR - END -->
@@ -148,7 +148,7 @@
 														<c:set var="totalPage" value="${page.totalPage}" />
 														<c:set var="actionUrl" value="${base}/system/member/" />
 														<c:set var="urlParas" value="-${query.type}?mobile=${param.mobile}&is_upload=${param.is_upload}" />
-														<%@include file="../common/page.html"%>
+														<div th:replace="../templates/common/page :: html"></div>
 													</ul>
 												</div>
 											</div>

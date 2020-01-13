@@ -35,6 +35,7 @@ import java.util.Map;
  */
 
 @Controller
+@RequestMapping("/api")
 public class ApiServiceController {
     @Autowired
     UserLogService userLogService;
@@ -130,7 +131,7 @@ public class ApiServiceController {
     /**
      * 验证是否登录
      */
-    @RequestMapping("isLogin/{type}")
+    @RequestMapping("/isLogin/{type}")
     @ResponseBody
     public ResultBean isLogin(HttpServletRequest request, HttpServletResponse response, @PathVariable String type) {
         String uid = "";
@@ -182,7 +183,7 @@ public class ApiServiceController {
     /**
      * 登出
      */
-    @RequestMapping()
+    @RequestMapping("/outLogin")
     @ResponseBody
     public ResultBean outLogin(HttpServletRequest request, HttpServletResponse response) {
         try {
@@ -199,7 +200,7 @@ public class ApiServiceController {
     /**
      * 验证注册手机号
      */
-    @RequestMapping("validateMobile")
+    @RequestMapping("/validateMobile")
     @ResponseBody
     public ResultBean validateMobile(HttpServletRequest request, HttpServletResponse response, String mobile) {
 
@@ -228,7 +229,7 @@ public class ApiServiceController {
      * 注册
      */
     @SuppressWarnings("unchecked")
-    @RequestMapping("registValidate")
+    @RequestMapping("/registValidate")
     @ResponseBody
     public ResultBean registValidate(HttpServletRequest request, HttpServletResponse response, String type, String vCode, String userPwd, String mobile, String uuid, String frmId, String nickname) {
         try {
@@ -271,7 +272,7 @@ public class ApiServiceController {
     /**
      * 重置密码
      */
-    @RequestMapping("resetPwd")
+    @RequestMapping("/resetPwd")
     @ResponseBody
     public ResultBean resetPwd(HttpServletRequest request, HttpServletResponse response, String mobile, String vCode, String userPwd, String type) {
         try {
@@ -305,7 +306,7 @@ public class ApiServiceController {
     /**
      * 发送重置密码手机验证码
      */
-    @RequestMapping("sendResetPwdVcode")
+    @RequestMapping("/sendResetPwdVcode")
     @ResponseBody
     public ResultBean sendResetPwdVcode(HttpServletRequest request, HttpServletResponse response, String mobile) {
         try {
@@ -329,7 +330,7 @@ public class ApiServiceController {
     /**
      * 发送短信快捷登录手机验证码
      */
-    @RequestMapping("sendResetMsgLoginVcode")
+    @RequestMapping("/sendResetMsgLoginVcode")
     public ResultBean sendResetMsgLoginVcode(HttpServletRequest request, HttpServletResponse response, String mobile) {
         try {
             if (StringUtils.isEmpty(mobile))
@@ -352,7 +353,7 @@ public class ApiServiceController {
     /**
      * 激活邮箱，注册
      */
-    @RequestMapping("emailEffect")
+    @RequestMapping("/emailEffect")
     @ResponseBody
     public String emailEffect(HttpServletRequest request, HttpServletResponse response, String email, String vcode, Model model) {
         try {
@@ -413,7 +414,7 @@ public class ApiServiceController {
     /**
      * 激活邮箱，重置密码
      */
-    @RequestMapping("emailPwd")
+    @RequestMapping("/emailPwd")
     @ResponseBody
     public String emailPwd(HttpServletRequest request, HttpServletResponse response, String email, String vcode,Model model) {
         try {

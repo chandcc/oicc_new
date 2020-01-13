@@ -26,7 +26,6 @@ public class DateUtil {
 		time = sdf.format(date); // 获取字符串，传�?�给time
 		return time;// 返回时间
 	}
-	
 	/**
 	 * 获取SimpleDateFormat
 	 * @param pattern 日期格式"yyyy-MM-dd HH:mm:ss"
