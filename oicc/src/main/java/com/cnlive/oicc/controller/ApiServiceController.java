@@ -6,8 +6,8 @@ import com.cnlive.oicc.entity.TEmailType;
 import com.cnlive.oicc.bean.ResultBean;
 import com.cnlive.oicc.entity.TMember;
 import com.cnlive.oicc.service.MemberService;
-import com.cnlive.oicc.service.TEmailPwdService;
-import com.cnlive.oicc.service.TEmailTypeService;
+import com.cnlive.oicc.service.EmailPwdService;
+import com.cnlive.oicc.service.EmailTypeService;
 import com.cnlive.oicc.service.UserLogService;
 import com.cnlive.oicc.utils.CommonUtils;
 import com.cnlive.oicc.utils.Constants;
@@ -42,11 +42,11 @@ public class ApiServiceController {
     @Autowired
     MemberService memberService;
     @Autowired
-    TEmailTypeService tEmailTypeService;
+    EmailTypeService emailTypeService;
     @Autowired
     ThymeleafViewResolver thymeleafViewResolver;//用来输出页面的，一个接口既要返回数据又要返回页面的时候用
     @Autowired
-    TEmailPwdService tEmailPwdService;
+    EmailPwdService emailPwdService;
 
     private Logger logger = Logger.getLogger(ApiServiceController.class);
 
@@ -363,7 +363,7 @@ public class ApiServiceController {
             } else {
                 long date = new Date().getTime() - 1000 * 3600 * 24L;
                 Timestamp timestamp = new Timestamp(date);
-                TEmailType temailType = tEmailTypeService.findTemailType(email, vcode, timestamp);
+                TEmailType temailType = emailTypeService.findTemailType(email, vcode, timestamp);
                 if (temailType != null) {
                     if (temailType.getType() == Constants.ACTIVE) {
                         //setAttr("msg","您的账号已激活，请勿重复请求");
@@ -389,7 +389,7 @@ public class ApiServiceController {
                             request.getSession().setAttribute("registStep", "3");
                             //更新邮箱激活状态
                             temailType.setType(Constants.ACTIVE);
-                            boolean update = tEmailTypeService.update(temailType);
+                            boolean update = emailTypeService.update(temailType);
                             if (update == true) {
                                 request.setAttribute("msg", "Activate the success");
                             }
@@ -424,7 +424,7 @@ public class ApiServiceController {
             } else {
                 long date = new Date().getTime() - 1000 * 3600 * 24L;
                 Timestamp timestamp = new Timestamp(date);
-                TEmailPwd temailPwd = tEmailPwdService.findTemailPwd(email, vcode, timestamp);
+                TEmailPwd temailPwd = emailPwdService.findTemailPwd(email, vcode, timestamp);
                 if (temailPwd != null) {
                     if (temailPwd.getType() == Constants.ACTIVE) {
                         //setAttr("msg","您的密码已重置，请勿重复请求");
@@ -436,7 +436,7 @@ public class ApiServiceController {
                         if ("0".equals(errorCode)) {
                             userLogService.delteUserLoginCookie(response);
                             temailPwd.setType(Constants.ACTIVE);
-                            tEmailPwdService.update(temailPwd);
+                            emailPwdService.update(temailPwd);
                             //setAttr("msg","重置密码成功");
                             request.setAttribute("msg", "Reset password success");
                         } else {

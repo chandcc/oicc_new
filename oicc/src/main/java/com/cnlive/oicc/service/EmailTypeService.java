@@ -13,7 +13,7 @@ import java.sql.Timestamp;
  * @Description:
  */
 @Service
-public class TEmailTypeService {
+public class EmailTypeService {
     @Autowired
     TEmailTypeMapper tEmailTypeMapper;
 

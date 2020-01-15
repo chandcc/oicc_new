@@ -14,7 +14,7 @@ import java.sql.Timestamp;
  * @Description:
  */
 @Service
-public class TEmailPwdService {
+public class EmailPwdService {
     @Autowired
     TEmailPwdMapper tEmailPwdMapper;
 
