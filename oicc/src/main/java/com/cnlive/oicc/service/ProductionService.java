@@ -13,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class ProductionService {
@@ -31,34 +32,34 @@ public class ProductionService {
         return i > 0 ? true : false;
     }
 
-    public PageInfo<TProduction> getAdminIndexByPage(Integer pageNo, String mobile, String group_id, String type) {
+    public PageInfo<Map<String, Object>> getAdminIndexByPage(Integer pageNo, String mobile, String group_id, String type) {
         int pageSize = 15;
-        PageInfo<TProduction> videoPage = paginateAdmin(pageNo, pageSize, mobile, group_id, type);
+        PageInfo<Map<String, Object>> videoPage = paginateAdmin(pageNo, pageSize, mobile, group_id, type);
         return videoPage;
     }
 
-    public PageInfo<TProduction> paginateAdmin(int pageNumber, int pageSize, String mobile, String group_id, String type) {
+    public PageInfo<Map<String, Object>> paginateAdmin(int pageNumber, int pageSize, String mobile, String group_id, String type) {
         String sql = "from t_production p,t_member m where m.id=p.t_user_id and is_upload=1 and type=? ";
         PageHelper.startPage(pageNumber, pageSize);
         boolean isNull_group = StringUtils.isEmpty(group_id);
         boolean isNull_mobile = StringUtils.isEmpty(mobile);
         if ("1".equals(type)) group_id = "0";
         if (isNull_group && isNull_mobile) {
-            List<TProduction> paginate = tProductionMapper.paginate(type);
-            PageInfo<TProduction> pageInfo = new PageInfo<>(paginate);
-            return pageInfo;
+            List<Map<String,Object>> paginate = tProductionMapper.paginate(type);
+            PageInfo<Map<String, Object>> mapPageInfo = new PageInfo<>(paginate);
+            return mapPageInfo;
         } else if ((!isNull_group) && isNull_mobile) {
-            List<TProduction> paginate = tProductionMapper.paginate_groupNotNull(type, group_id);
-            PageInfo<TProduction> pageInfo = new PageInfo<>(paginate);
-            return pageInfo;
+            List<Map<String,Object>> paginate = tProductionMapper.paginate_groupNotNull(type, group_id);
+            PageInfo<Map<String, Object>> mapPageInfo = new PageInfo<>(paginate);
+            return mapPageInfo;
         } else if (isNull_group && (!isNull_mobile)) {
-            List<TProduction> paginate = tProductionMapper.paginate_mobileNotNull(type, mobile);
-            PageInfo<TProduction> pageInfo = new PageInfo<>(paginate);
-            return pageInfo;
+            List<Map<String,Object>> paginate = tProductionMapper.paginate_mobileNotNull(type, mobile);
+            PageInfo<Map<String, Object>> mapPageInfo = new PageInfo<>(paginate);
+            return mapPageInfo;
         } else {
-            List<TProduction> paginate = tProductionMapper.paginate1(type, group_id, mobile);
-            PageInfo<TProduction> pageInfo = new PageInfo<>(paginate);
-            return pageInfo;
+            List<Map<String,Object>> paginate = tProductionMapper.paginate1(type, group_id, mobile);
+            PageInfo<Map<String, Object>> mapPageInfo = new PageInfo<>(paginate);
+            return mapPageInfo;
         }
     }
 

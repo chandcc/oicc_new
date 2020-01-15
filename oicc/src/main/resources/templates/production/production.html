@@ -58,29 +58,30 @@
                                 <div class="dataTables_wrmessageer form-inline">
                                     <div class="dataTables_wrapper form-inline">
                                         <div class="input-group">
-                                            <form action="${base}/system/production/1-${query.type}" method="post">
-                                                <input type="text" name="mobile"
-                                                       class="form-control animated fadeIn"
-                                                       placeholder="作品名称或手机号" th:text="${query.mobile}">
-                                                <span th:if="${query.type eq 0}">
+                                            <form>
+                                                <input type="text" th:id="mobile"
+                                                       class="form-control animated fadeIn" th:value="${query.mobile}"
+                                                       placeholder="作品名称或手机号"  >
+                                                <span th:if="${query.type eq '0'}">
                                                      <select class="input-lg m-bot15 btn-sm" name="group_id"
-                                                            id="selcountry" style="height: 34px;">
+                                                             th:id="group_id"
+                                                             style="height: 34px;">
                                                         <option value="">所属领域</option>
-                                                        <option value="1" th:selected="${query.group eq 1}">传达领域
+                                                        <option value="1" th:selected="${query.group eq '1'}">传达领域
                                                         </option>
-                                                        <option value="2" th:selected="${query.group eq 2}">商贸领域
+                                                        <option value="2" th:selected="${query.group eq '2'}">商贸领域
                                                         </option>
-                                                        <option value="3" th:selected="${query.group eq 3}">应用领域
+                                                        <option value="3" th:selected="${query.group eq '3'}">应用领域
                                                         </option>
-                                                        <option value="4" th:selected="${query.group eq 4}">数学与科学领域
+                                                        <option value="4" th:selected="${query.group eq '4'}">数学与科学领域
                                                         </option>
-                                                        <option value="5" th:selected="${query.group eq 5}">物质领域
+                                                        <option value="5" th:selected="${query.group eq '5'}">物质领域
                                                         </option>
                                                     </select>
                                                 </span>
-                                                <input type='submit' class="input-group-addon input-focus"
-                                                       value="查询">
+                                                <input type="button" th:onclick="javascript:chaxun()" class="input-group-addon input-focus" value="查询">
                                             </form>
+                                            </div>
                                         </div>
                                     </div>
 
@@ -104,18 +105,24 @@
                                         <tbody>
                                         <tr class="odd" th:each="u : ${videoPage.list}">
                                             <td><input type="checkbox" id="${u.id}"/></td>
-                                            <td th:text="${u.title}"></td>
-                                            <td th:text="${u.mobile}"></td>
-                                            <td th:if="${query.type eq 0} && ${u.group_id eq 1}">传达领域</td>
-                                            <td th:if="${query.type eq 0} && ${u.group_id eq 2}">商贸领域</td>
-                                            <td th:if="${query.type eq 0} && ${u.group_id eq 3}">应用领域</td>
-                                            <td th:if="${query.type eq 0} && ${u.group_id eq 4}">数学与科学领域</td>
-                                            <td th:if="${query.type eq 0} && ${u.group_id eq 5}">物质领域</td>
+                                            <td th:text="${u.title}">标题</td>
+                                            <td th:text="${u.mobile}">电话</td>
+                                            <td th:if="${query.type eq '0' && u.group_id eq 1}" th:text="'传达领域'">传达领域
+                                            </td>
+                                            <td th:if="${query.type eq '0' && u.group_id eq 2}" th:text="'商贸领域'">商贸领域
+                                            </td>
+                                            <td th:if="${query.type eq '0' && u.group_id eq 3}" th:text="'应用领域'">应用领域
+                                            </td>
+                                            <td th:if="${query.type eq '0' && u.group_id eq 4}" th:text="'数学与科学领域'">
+                                                数学与科学领域
+                                            </td>
+                                            <td th:if="${query.type eq '0' && u.group_id eq 5}" th:text="'物质领域'">物质领域
+                                            </td>
                                             <td><span th:text="${#dates.format(u.insert_time, 'yyyy-MM-dd HH:mm:ss')}">4564546</span>
                                             </td>
-                                            <td class="dl"><a th:href="@{${u.domain}/${u.file_path}?attname=}"
+                                            <td class="dl"><a th:href="@{{domain}/{file_path}(domain=${u.domain},file_path=${u.file_path},attname=)}"
                                                               class="btn" style="padding: 3px 18px;">下载</a></td>
-                                            <td class="dl"><a th:href="@{'javaScript:del('+${u.id}+')'" class="btn"
+                                            <td class="dl"><a th:href="@{'javascript:del('+${u.id}+')'}"  class="btn"
                                                               style="padding: 3px 18px;">状态重置</a></td>
                                         </tr>
                                         </tbody>
@@ -155,25 +162,6 @@
 </div>
 <!-- END CONTAINER -->
 <!-- LOAD FILES AT PAGE END FOR FASTER LOADING -->
-<script type="text/javascript">
-    function del(id) {
-        var msg = "您确定要重置选中内容吗？";
-        if (confirm(msg) == true) {
-            $.get("${base}/system/production/del/" + id, function (data) {
-                if (data == "0") {
-                    alert("作品状态已重置");
-                    location.reload();
-                } else {
-                    alert("作品状态重置失败，请稍后尝试");
-                }
-            })
-        } else {
-            return false;
-        }
-    }
-
-</script>
-
 <!-- CORE JS FRAMEWORK - START -->
 <script src="/assets/js/jquery-1.11.2.min.js"
         type="text/javascript"></script>
@@ -191,13 +179,10 @@
         src="/assets/plugins/viewport/viewportchecker.js"
         type="text/javascript"></script>
 <!-- CORE JS FRAMEWORK - END -->
-
-
 <!-- CORE TEMPLATE JS - START -->
 <script src="/assets/js/scripts.js"
         type="text/javascript"></script>
 <!-- END CORE TEMPLATE JS - END -->
-
 <!-- Sidebar Graph - START -->
 <script
         src="/assets/plugins/sparkline-chart/jquery.sparkline.min.js"
@@ -205,7 +190,6 @@
 <script src="/assets/js/chart-sparkline.js"
         type="text/javascript"></script>
 <!-- Sidebar Graph - END -->
-
 <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - START -->
 <script
         src="/assets/plugins/messenger/js/messenger.min.js"
@@ -219,12 +203,48 @@
 <script src="/assets/js/messenger.js"
         type="text/javascript"></script>
 <!-- OTHER SCRIPTS INCLUDED ON THIS PAGE - END -->
-
 <!-- video checkbox start-->
 <script src="/assets/plugins/icheck/icheck.js"
         type="text/javascript"></script>
 <!-- video checkbox end-->
+<script th:inline="javascript">
+    function del(id) {
+        var msg = "您确定要重置选中内容吗？";
+        if (confirm(msg) == true) {
+            $.get("/production/del?id=" + id, function (data) {
+                if (data == "0") {
+                    alert("作品状态已重置");
+                    location.reload();
+                } else {
+                    alert("作品状态重置失败，请稍后尝试");
+                }
+            })
+        } else {
+            return false;
+        }
+    }
+    //查询按钮
+    function chaxun() {
+        var group_id = $("#group_id").val();
+        var mobile = $("#mobile").val();
+        var type = [[${query.type}]];
+        location.href="/production/index/1/0?mobile="+mobile+"&group_id="+group_id;
+        // $.ajax({
+        //     url: "/production/index/1/0",
+        //     type: "GET",
+        //     data: {
+        //         "mobile": mobile,
+        //         "group_id":group_id
+        //     },
+        //     success: function (res) {
+        //         console.log("成功");
+        //     },
+        //     error: function (e) {
+        //         alert('请稍后再试！');
+        //     }
+        // });
+    }
 
-
+</script>
 </body>
 </html>

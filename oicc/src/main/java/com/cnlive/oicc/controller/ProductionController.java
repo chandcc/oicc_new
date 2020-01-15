@@ -21,6 +21,7 @@ import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 参赛作品管理
@@ -40,7 +41,7 @@ public class ProductionController {
         userMap.put("mobile", mobile);
         userMap.put("group", group_id);
         userMap.put("type", type1);
-        PageInfo<TProduction> page = productionService.getAdminIndexByPage(type0, mobile, group_id, type1);
+        PageInfo<Map<String, Object>> page = productionService.getAdminIndexByPage(type0, mobile, group_id, type1);
         Model.addAttribute("videoPage",page);
         Model.addAttribute("query",userMap);
         return "production/production";
