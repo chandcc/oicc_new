@@ -34,14 +34,14 @@ public class ProductionController {
     ProductionService productionService;
     @Autowired
     MemberService memberService;
-    @RequestMapping("/index/{type0}/{type1}")
-    public String index(Model Model,HttpServletRequest request, HttpServletResponse response, String mobile, String group_id, @PathVariable int type0, @PathVariable String type1) {
+    @RequestMapping("/index/{pageNo}/{type}")
+    public String index(Model Model,HttpServletRequest request, HttpServletResponse response, String mobile, String group_id, @PathVariable int pageNo, @PathVariable String type) {
         HashMap<String, String> userMap = new HashMap<String, String>();
         request.getSession().setAttribute("query", null);
         userMap.put("mobile", mobile);
         userMap.put("group", group_id);
-        userMap.put("type", type1);
-        PageInfo<Map<String, Object>> page = productionService.getAdminIndexByPage(type0, mobile, group_id, type1);
+        userMap.put("type", type);
+        PageInfo<Map<String, Object>> page = productionService.getAdminIndexByPage(pageNo, mobile, group_id, type);
         Model.addAttribute("videoPage",page);
         Model.addAttribute("query",userMap);
         return "production/production";
