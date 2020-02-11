@@ -1,16 +1,21 @@
 package com.cnlive.oicc.service;
+
 import com.alibaba.druid.util.StringUtils;
 import com.cnlive.oicc.entity.TMember;
+import com.cnlive.oicc.entity.TProduction;
 import com.cnlive.oicc.mapper.TMemberMapper;
 import com.cnlive.oicc.utils.CommonUtils;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import java.util.List;
+import java.util.Map;
 
 
 /**
  * 保存用户token
- *
  */
 
 @Service
@@ -52,7 +57,7 @@ public class MemberService {
                     member.setCreateDateJs(CommonUtils.getCurrentTimestamp());
                 }
             }
-            return tMemberMapper.updateByPrimaryKeySelective(member) >0 ? true : false;
+            return tMemberMapper.updateByPrimaryKeySelective(member) > 0 ? true : false;
         }
 
     }
@@ -69,7 +74,48 @@ public class MemberService {
             if (member != null) return String.valueOf(member.getId());
         }
         return null;
-
     }
 
+    public List<TMember> findAllidNotInEnrol(String tableName) {
+        return tMemberMapper.findAllidNotInEnrol(tableName);
+    }
+
+    public List<TMember> findAllidNotInproduction(String tableName, String type) {
+        return tMemberMapper.findAllidNotInproduction(tableName, type);
+    }
+
+    public PageInfo<Map<String, Object>> paginate(int pageNo, int pageSize, String tableName, String time, String mobile) {
+        PageHelper.startPage(pageNo, pageSize);
+        List<Map<String, Object>> paginatelist = tMemberMapper.paginate(tableName, time, mobile);
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(paginatelist);
+        return pageInfo;
+    }
+
+    public PageInfo<Map<String, Object>> paginate1(int pageNo, int pageSize, String tableName, String time, String mobile) {
+        PageHelper.startPage(pageNo, pageSize);
+        List<Map<String, Object>> paginatelist = tMemberMapper.paginate1(tableName, time, mobile);
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(paginatelist);
+        return pageInfo;
+    }
+
+    public PageInfo<Map<String, Object>> paginate2(int pageNo, int pageSize, String tableName, String time, String mobile) {
+        PageHelper.startPage(pageNo, pageSize);
+        List<Map<String, Object>> paginatelist = tMemberMapper.paginate2(tableName, time, mobile);
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(paginatelist);
+        return pageInfo;
+    }
+
+    public PageInfo<Map<String, Object>> paginate3(int pageNo, int pageSize, String tableName, String time, String mobile) {
+        PageHelper.startPage(pageNo, pageSize);
+        List<Map<String, Object>> paginatelist = tMemberMapper.paginate3(tableName, time, mobile);
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(paginatelist);
+        return pageInfo;
+    }
+
+    public PageInfo<Map<String, Object>> paginate4(int pageNo, int pageSize, String tableName, String time, String mobile, int upload) {
+        PageHelper.startPage(pageNo, pageSize);
+        List<Map<String, Object>> paginatelist = tMemberMapper.paginate4(tableName, time, mobile, upload);
+        PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(paginatelist);
+        return pageInfo;
+    }
 }

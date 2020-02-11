@@ -138,7 +138,34 @@
                                             <!-- page start -->
                                             <div class="dataTables_paginate paging_bootstrap">
                                                 <ul class="pagination">
-                                                    <div th:replace="../templates/common/page :: html"></div>
+                                                    <div class="pagination btn-sm">
+                                                        <!--/production/index/{type0}/{type1}?moblie=$grou_id=-->
+                                                        <li class="prev disabled"><a th:if="${videoPage.hasPreviousPage} == false" th:text="'← Previous'">← Previous</a>
+                                                        </li>
+                                                        <li class="prev "><a th:if="${videoPage.hasPreviousPage} == true"
+                                                                             th:href="@{/production/index/{type0}/{type1}(type0=${videoPage.prePage},type1=${query.type},mobile=${query.mobile},group_id=${query.group})}"
+                                                                             th:text="'← Previous'">← Previous</a></li>
+                                                        <li class="active"><a
+                                                                th:href="@{/production/index/{type0}/{type1}(type0=${videoPage.pageNum},type1=${query.type},mobile=${query.mobile},group_id=${query.group})}"
+                                                                th:text="${videoPage.pageNum}">1</a></li>
+                                                        <li th:if="${videoPage.hasNextPage}">
+                                                            <a th:href="@{/production/index/{type0}/{type1}(type0=${videoPage.nextPage},type1=${query.type},mobile=${query.mobile},group_id=${query.group})}"
+                                                               th:text="${videoPage.nextPage}">2</a></li>
+                                                        <li th:if="${videoPage.nextPage+1 <videoPage.pages && videoPage.hasNextPage} ">
+                                                            <a th:href="@{/production/index/{type0}/{type1}(type0=${videoPage.nextPage+1},type1=${query.type},mobile=${query.mobile},group_id=${query.group})}"
+                                                               th:text="${videoPage.nextPage+1}">3</a></li>
+                                                        <li><span>…</span></li>
+                                                        <li th:if="${videoPage.pages} > 1">
+                                                            <a th:href="@{/production/index/{type0}/{type1}(type0=${videoPage.pages-1},type1=${query.type},mobile=${query.mobile},group_id=${query.group})}"
+                                                               th:text="${videoPage.pages-1}">99</a></li>
+                                                        <li>
+                                                            <a th:href="@{/production/index/{type0}/{type1}(type0=${videoPage.pages},type1=${query.type},mobile=${query.mobile},group_id=${query.group})}"
+                                                               th:text="${videoPage.pages}">100</a></li>
+                                                        <li class="next"><a th:if="${videoPage.hasNextPage == true}"
+                                                                            th:href="@{/production/index/{type0}/{type1}(type0=${videoPage.nextPage},type1=${query.type},mobile=${query.mobile},group_id=${query.group})}"
+                                                                            th:text="'Next →'">Next →</a></li>
+                                                        <li class="next disabled"><a th:if="${videoPage.hasNextPage == false}" th:text="'Next →'">Next →</a></li>
+                                                    </div>
                                                 </ul>
                                             </div>
                                             <!-- page start -->
