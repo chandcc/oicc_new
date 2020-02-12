@@ -3,9 +3,9 @@ server:
 #jdbc
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3308/cnlive_oicc?autoReconnect=true&failOverReadOnly=false&serverTimezone=UTC
+    url: jdbc:mysql://localhost:3307/cnlive_oicc?autoReconnect=true&failOverReadOnly=false&serverTimezone=UTC
     username: root
-    password: 123456
+    password: root
 #mybatis:
   type-aliases-package: com.cnlive.oicc
   thymeleaf:
