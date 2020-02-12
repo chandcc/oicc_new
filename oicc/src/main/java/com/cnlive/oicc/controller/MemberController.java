@@ -88,10 +88,10 @@ public class MemberController {
                 }
             } else {
                 if (upload == 2) {//未上传用户
-                    PageInfo<Map<String, Object>> paginate = memberService.paginate3(pageNo, pageSize, tableName, time, mobile);
+                    PageInfo<Map<String, Object>> paginate = memberService.paginate3(pageNo, pageSize, tableName, time, mobile,type);
                     model.addAttribute("page", paginate);
                 } else {
-                    PageInfo<Map<String, Object>> paginate = memberService.paginate4(pageNo, pageSize, tableName, time, mobile, upload);
+                    PageInfo<Map<String, Object>> paginate = memberService.paginate4(pageNo, pageSize, tableName, time, mobile, upload,type);
                     model.addAttribute("page", paginate);
                 }
             }

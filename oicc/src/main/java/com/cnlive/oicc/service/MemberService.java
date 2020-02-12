@@ -105,16 +105,16 @@ public class MemberService {
         return pageInfo;
     }
 
-    public PageInfo<Map<String, Object>> paginate3(int pageNo, int pageSize, String tableName, String time, String mobile) {
+    public PageInfo<Map<String, Object>> paginate3(int pageNo, int pageSize, String tableName, String time, String mobile,String type) {
         PageHelper.startPage(pageNo, pageSize);
-        List<Map<String, Object>> paginatelist = tMemberMapper.paginate3(tableName, time, mobile);
+        List<Map<String, Object>> paginatelist = tMemberMapper.paginate3(tableName, time, mobile,type);
         PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(paginatelist);
         return pageInfo;
     }
 
-    public PageInfo<Map<String, Object>> paginate4(int pageNo, int pageSize, String tableName, String time, String mobile, int upload) {
+    public PageInfo<Map<String, Object>> paginate4(int pageNo, int pageSize, String tableName, String time, String mobile, int upload,String type) {
         PageHelper.startPage(pageNo, pageSize);
-        List<Map<String, Object>> paginatelist = tMemberMapper.paginate4(tableName, time, mobile, upload);
+        List<Map<String, Object>> paginatelist = tMemberMapper.paginate4(tableName, time, mobile, upload,type);
         PageInfo<Map<String, Object>> pageInfo = new PageInfo<>(paginatelist);
         return pageInfo;
     }
