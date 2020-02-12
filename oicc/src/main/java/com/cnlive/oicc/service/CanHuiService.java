@@ -3,20 +3,22 @@ package com.cnlive.oicc.service;
 import com.alibaba.druid.util.StringUtils;
 import com.cnlive.oicc.entity.TCanhui;
 import com.cnlive.oicc.mapper.TCanhuiMapper;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.AllArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+
+@AllArgsConstructor
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class CanHuiService {
 	private static Log logger = LogFactory.getLog(CanHuiService.class);
-	@Autowired
-	TCanhuiMapper tCanhuiMapper;
+	private final TCanhuiMapper tCanhuiMapper;
 	/**
 	 * 通过手机号获取用户信息
 	 * @param mobile

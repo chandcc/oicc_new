@@ -5,20 +5,22 @@ import com.cnlive.oicc.entity.TEnrol;
 import com.cnlive.oicc.mapper.TEnrolMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.AllArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
 /**
  * 报名信息
  */
+@AllArgsConstructor
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class EnrolService {
-    @Autowired
-    TEnrolMapper tEnrolMapper;
+   private final TEnrolMapper tEnrolMapper;
     private static Log logger = LogFactory.getLog(EnrolService.class);
 
     public PageInfo<TEnrol> getEnrolByPage(Integer pageNo, int pageSize, String query) {
