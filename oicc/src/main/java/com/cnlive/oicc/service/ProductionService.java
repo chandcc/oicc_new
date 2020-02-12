@@ -4,22 +4,23 @@ import com.alibaba.druid.util.StringUtils;
 import com.cnlive.oicc.entity.TProduction;
 import com.cnlive.oicc.mapper.TProductionMapper;
 import com.cnlive.oicc.utils.CommonUtils;
-import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import lombok.AllArgsConstructor;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Map;
 
+@AllArgsConstructor
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class ProductionService {
     private static Log logger = LogFactory.getLog(ProductionService.class);
-    @Autowired
-    TProductionMapper tProductionMapper;
+    private final TProductionMapper tProductionMapper;
 
     /**
      * 更新

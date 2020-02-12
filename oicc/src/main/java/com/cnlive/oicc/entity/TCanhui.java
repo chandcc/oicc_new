@@ -13,10 +13,7 @@ import java.io.Serializable;
 @Data
 @Table(name = "t_canhui")
 public class TCanhui implements Serializable {
-
     private static final long serialVersionUID = 1578365467380L;
-
-
     /**
     * 主键
     * 

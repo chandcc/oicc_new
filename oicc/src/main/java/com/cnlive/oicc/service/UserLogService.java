@@ -6,8 +6,9 @@ import com.cnlive.oicc.bean.ResultBean;
 import com.cnlive.oicc.entity.TEmailType;
 import com.cnlive.oicc.mapper.TEmailTypeMapper;
 import com.cnlive.oicc.utils.*;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.Cookie;
@@ -24,12 +25,12 @@ import java.util.UUID;
  * @author fan xiao chun
  * @Date 2017年1月1日
  */
+@AllArgsConstructor
 @Service
+@NoArgsConstructor
 public class UserLogService {
-    @Autowired
-    TEmailTypeMapper tEmailTypeMapper;
-    public static UserLogService me = new UserLogService();
-
+    public static UserLogService me;
+    private TEmailTypeMapper tEmailTypeMapper;
     private Logger logger = Logger.getLogger(UserLogService.class);
 
     /**

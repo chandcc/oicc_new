@@ -6,8 +6,9 @@ import com.cnlive.oicc.entity.TUser;
 import com.cnlive.oicc.mapper.TUserMapper;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 import java.util.HashMap;
@@ -18,10 +19,11 @@ import java.util.Map;
  * 系统用户
  */
 @SuppressWarnings("serial")
+@AllArgsConstructor
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class UserService {
-    @Autowired
-    TUserMapper tUserMapper;
+    private final TUserMapper tUserMapper;
 
     /**
      * 按照操作人的条件倒序时间查询

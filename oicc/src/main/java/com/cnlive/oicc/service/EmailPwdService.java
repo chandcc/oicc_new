@@ -1,10 +1,10 @@
 package com.cnlive.oicc.service;
 
 import com.cnlive.oicc.entity.TEmailPwd;
-import com.cnlive.oicc.entity.TEmailType;
 import com.cnlive.oicc.mapper.TEmailPwdMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 
@@ -13,10 +13,12 @@ import java.sql.Timestamp;
  * @Date: 2020/1/8 18:58
  * @Description:
  */
+@AllArgsConstructor
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class EmailPwdService {
-    @Autowired
-    TEmailPwdMapper tEmailPwdMapper;
+
+    private final TEmailPwdMapper tEmailPwdMapper;
 
     public TEmailPwd findTemailPwd(String email, String vcode, Timestamp timestamp) {
         return tEmailPwdMapper.findTemailType(email, vcode, timestamp);

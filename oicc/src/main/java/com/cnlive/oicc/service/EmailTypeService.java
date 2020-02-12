@@ -2,8 +2,9 @@ package com.cnlive.oicc.service;
 
 import com.cnlive.oicc.entity.TEmailType;
 import com.cnlive.oicc.mapper.TEmailTypeMapper;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.sql.Timestamp;
 
@@ -12,10 +13,11 @@ import java.sql.Timestamp;
  * @Date: 2020/1/8 16:25
  * @Description:
  */
+@AllArgsConstructor
 @Service
+@Transactional(rollbackFor = Exception.class)
 public class EmailTypeService {
-    @Autowired
-    TEmailTypeMapper tEmailTypeMapper;
+  private final TEmailTypeMapper tEmailTypeMapper;
 
     public TEmailType findTemailType(String email, String vcode, Timestamp timestamp) {
         return tEmailTypeMapper.findTemailType(email, vcode, timestamp);
