@@ -174,7 +174,11 @@ public class ProductionService {
         } catch (Exception e) {
             return false;
         }
-
     }
+
+    public List<TProduction> findallByAnyWay(TProduction tProduction){
+        return tProductionMapper.select(tProduction);
+    }
+
 
 }

@@ -10,4 +10,7 @@ spring:
   type-aliases-package: com.cnlive.oicc
   thymeleaf:
     cache: false
+logging:
+  level:
+    com.cnlive.oicc.mapper:  debug
 #debug: true

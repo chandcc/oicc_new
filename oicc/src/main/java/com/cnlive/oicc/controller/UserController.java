@@ -59,7 +59,7 @@ public class UserController {
             result = userService.checkUser(username, MD5.sign(password));
             if (Integer.parseInt(String.valueOf(result.get("code"))) == 0) {
                 TUser user = userService.getUser(username);
-                model.addAttribute("userSession",user);
+                request.getSession().setAttribute("userSession",user);
                 result.put("role", user.getRole());
             }
 

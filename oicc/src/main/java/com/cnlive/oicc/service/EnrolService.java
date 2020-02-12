@@ -77,4 +77,7 @@ public class EnrolService {
         }
         return false;
     }
+    public List<TEnrol> findAll(){
+        return tEnrolMapper.selectAll();
+    }
 }
