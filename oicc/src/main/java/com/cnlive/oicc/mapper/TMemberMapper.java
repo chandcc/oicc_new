@@ -13,7 +13,7 @@ import java.util.Map;
  */
 public interface TMemberMapper extends Mapper<TMember> {
 
-    @Select("select * from  t_member where  #{tableName} =1 and  id not in (select memberId from t_enrol)")
+    @Select("select * from  t_member where  #{tableName} =1 and  id not in (select member_id from t_enrol)")
     public List<TMember> findAllidNotInEnrol(@Param("tableName") String tableName);
 
     @Select("select * from  t_member where ${tableName} =1 and  id not in (select t_user_id from t_production where type= #{type} )")
@@ -23,12 +23,12 @@ public interface TMemberMapper extends Mapper<TMember> {
             "or nickName like CONCAT('%',#{mobile},'%'))</when> order by ${time}  desc </script>"})
     List<Map<String, Object>> paginate(@Param("tableName") String tableName, @Param("time") String time, @Param("mobile") String mobile);
 
-    @Select({"<script>select *  from t_member  where ${tableName}  =1 and  id  in (select memberId from t_enrol)  <when test='mobile!=null'>" +
+    @Select({"<script>select *  from t_member  where ${tableName}  =1 and  id  in (select member_id from t_enrol)  <when test='mobile!=null'>" +
             "and (mobile like CONCAT('%',#{mobile},'%') " +
             "or nickName like CONCAT('%',#{mobile},'%') ) </when> order by ${time}  desc</script>"})
     List<Map<String, Object>> paginate1(@Param("tableName") String tableName, @Param("time") String time, @Param("mobile") String mobile);
 
-    @Select({"<script>select * from t_member  where tableName  =1 and  id not in (select memberId from t_enrol) <when test='mobile!=null'>" +
+    @Select({"<script>select * from t_member  where tableName  =1 and  id not in (select member_id from t_enrol) <when test='mobile!=null'>" +
             "and (mobile like CONCAT('%',#{mobile},'%')" +
             " or nickName like CONCAT('%',#{mobile},'%') ) </when> order by ${time} desc </script>"})
     List<Map<String, Object>> paginate2(@Param("tableName") String tableName, @Param("time") String time, @Param("mobile") String mobile);

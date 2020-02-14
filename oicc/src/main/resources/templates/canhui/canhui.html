@@ -2,14 +2,14 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>鄂尔多斯峰会后台管理系统</title>
-<%@include file="../common/res.html"%>
+	<div th:replace="../templates/common/res :: html"></div>
 </head>
 <body class=" ">
 	<!-- START TOPBAR -->
 	<div class='page-topbar '>
 		<div class='logo-area'></div>
 		<!-- head start -->
-		<%@include file="../common/head.html"%>
+		<div th:replace="../templates/common/head :: html"></div>
 		<!-- head end -->
 	</div>
 	<!-- END TOPBAR -->
@@ -20,7 +20,7 @@
 		<div class="page-sidebar ">
 			<!-- MAIN MENU - START -->
 			<!-- <c:set var="tindex" value="2"/> -->
-			<%@include file="../common/menu.html"%>
+			<div th:replace="../templates/common/menu :: html"></div>
 			<!-- MAIN MENU - END -->
 		</div>
 		<!--  SIDEBAR - END -->
@@ -43,11 +43,11 @@
 								<div class="col-md-12 col-sm-12 col-xs-12">
 									<div class="dataTables_wrapper form-inline">
 											<div class="input-group">
-												<form action="${base}/system/canhui/1" method="post">
-													<input type="text" name="query"
+												<form >
+													<input th:id="mobile"type="text"
 														class="form-control animated fadeIn"
-														placeholder="姓名或者手机号" value="${query}">
-													<input type='submit' class="input-group-addon input-focus"
+														placeholder="姓名或者手机号" th:value="${query}">
+													<input type="button" th:onclick="javascript:chaxun()" class="input-group-addon input-focus"
 														value="查询">
 												</form>
 											</div>
@@ -64,32 +64,52 @@
 											</thead>
 
 											<tbody>
-												<c:forEach items="${chPage.list}" var="user">
-													<tr>
-														<td class="sorting_1">${user.userName}</td>
-														<td>${user.mobile}</td>
-														<td>${user.email}</td>
+													<tr th:each="user: ${chPage.list}">
+														<td class="sorting_1"th:text="${user.userName}">${user.userName}</td>
+														<td th:text="${user.mobile}">${user.mobile}</td>
+														<td th:text="${user.email}">${user.email}</td>
 													</tr>
-												</c:forEach>
 											</tbody>
 										</table>
 										<div class="row">
 											<div class="col-xs-6">
-												<div class="dataTables_info">共${chPage.getTotalRow()}条数据/每页${chPage.getPageSize()}条</div>
+												<div class="dataTables_info">共<span th:text="${chPage.total}"></span>条数据/每页<span th:text="${chPage.size}"></span>条</div>
 											</div>
 											<div class="col-xs-6">
-												<div class="dataTables_paginate paging_bootstrap"
-													id="example-1_paginate1">
+												<!-- page start -->
+												<div class="dataTables_paginate paging_bootstrap">
 													<ul class="pagination">
-														<!-- p -->
-														<c:set var="currentPage"
-															value="${chPage.pageNumber}" />
-														<c:set var="totalPage" value="${chPage.totalPage}" />
-														<c:set var="actionUrl" value="${base}/system/canhui/" />
-														<c:set var="urlParas" value="?query=${query}" />
-														<%@include file="../common/page.html"%>
+														<div class="pagination btn-sm">
+															<!--/production/index/{pageno}?moblie=$grou_id=-->
+															<li class="prev disabled"><a th:if="${chPage.hasPreviousPage} == false" th:text="'← Previous'">← Previous</a>
+															</li>
+															<li class="prev "><a th:if="${chPage.hasPreviousPage} == true"
+																				 th:href="@{/canhui/index/{pageno}(pageno=${chPage.prePage},query=${query})}"
+																				 th:text="'← Previous'">← Previous</a></li>
+															<li class="active"><a
+																	th:href="@{/canhui/index/{pageno}(pageno=${chPage.pageNum},query=${query})}"
+																	th:text="${chPage.pageNum}">1</a></li>
+															<li th:if="${chPage.hasNextPage}">
+																<a th:href="@{/canhui/index/{pageno}(pageno=${chPage.nextPage},query=${query})}"
+																   th:text="${chPage.nextPage}">2</a></li>
+															<li th:if="${chPage.nextPage+1 <chPage.pages && chPage.hasNextPage} ">
+																<a th:href="@{/canhui/index/{pageno}(pageno=${chPage.nextPage+1},query=${query})}"
+																   th:text="${chPage.nextPage+1}">3</a></li>
+															<li><span>…</span></li>
+															<li th:if="${chPage.pages} > 1">
+																<a th:href="@{/canhui/index/{pageno}(pageno=${chPage.pages-1},query=${query})}"
+																   th:text="${chPage.pages-1}">99</a></li>
+															<li>
+																<a th:href="@{/canhui/index/{pageno}(pageno=${chPage.pages},query=${query})}"
+																   th:text="${chPage.pages}">100</a></li>
+															<li class="next"><a th:if="${chPage.hasNextPage == true}"
+																				th:href="@{/enrol/index/{pageno}(pageno=${chPage.nextPage},query=${query})}"
+																				th:text="'Next →'">Next →</a></li>
+															<li class="next disabled"><a th:if="${chPage.hasNextPage == false}" th:text="'Next →'">Next →</a></li>
+														</div>
 													</ul>
 												</div>
+												<!-- page start -->
 											</div>
 										</div>
 									</div>
@@ -146,6 +166,13 @@
 		type="text/javascript"></script>
 	<!-- Sidebar Graph - END -->
 
+	<script th:inline="javascript">
+        //查询按钮
+        function chaxun() {
+            var mobile = $("#mobile").val();
+            location.href="/enrol/getEnrol/1?query="+mobile;
+        }
+	</script>
 
 </body>
 </html>

@@ -13,6 +13,8 @@ import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -24,7 +26,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 @Controller
-@RequestMapping
+@RequestMapping("/enrol")
 public class EnrolController {
     private static Log logger = LogFactory.getLog(EnrolController.class);
     @Autowired
@@ -35,12 +37,11 @@ public class EnrolController {
     /**
      * 获取用户报名信息
      */
-    @RequestMapping("getEnrol")
-    public String getEnrol(HttpServletRequest request, HttpServletResponse response, int pageNo, String query) {
-        request.getSession().setAttribute("query", null);
-        request.getSession().setAttribute("query", query);
-        request.setAttribute("enrolPage", enrolService.getEnrolByPage(pageNo, query));
-        return "enrol";
+    @RequestMapping("/getEnrol/{pageNo}")
+    public String getEnrol(HttpServletRequest request, HttpServletResponse response, @PathVariable int pageNo, String query, Model model) {
+        model.addAttribute("query",query);
+        model.addAttribute("enrolPage",enrolService.getEnrolByPage(pageNo, query));
+        return "enrol/enrol";
     }
 
     /**

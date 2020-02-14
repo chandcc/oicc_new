@@ -12,7 +12,6 @@
         <div class="profile-details col-md-8 col-sm-8 col-xs-8">
             <h3>
                 <a href="javaScript:void(0);" th:if="${session != null}" th:text="${session.userSession.name != null?session.userSession.name:'未登录'}">userSession.name</a>
-                <!--<a href="javaScript:void(0);" th:if="${userSession} == null" th:text="未登录">userSession.name</a>-->
                 <span class="profile-status online"></span>
             </h3>
             <p class="profile-title"></p>
@@ -20,7 +19,7 @@
     </div>
     <!-- USER INFO - END -->
     <ul class='wraplist' id="usertablist">
-			<!--<span th:if="${userSession.role eq 'oiccadmin'}">-->
+			<span th:if="${session.userSession.role eq 'oiccadmin'}">
 			<li class=""><a href="#"> <i class="fa fa-suitcase"></i> <span
                     class="title">文创北斗奖</span> <span class="arrow "></span>
 			</a>
@@ -34,32 +33,32 @@
                         class="arrow "></span>
 			</a></li>
 				</ul></li>
-			<!--</span>-->
-        <!--<span th:if="${userSession.role eq 'ipadmin'}">-->
+			</span>
+        <span th:if="${session.userSession.role eq 'ipadmin'}">
 			<li class=""><a href="#"> <i class="fa fa-suitcase"></i> <span
                     class="title">原创IP</span> <span class="arrow "></span>
 			</a>
 				<ul class="sub-menu">
-					<li class=""><a href="${base}/system/production/1-1"> <i
+					<li class=""><a th:href="@{/production/index/1/1}"> <i
                             class="fa fa-gift"></i> <span class="title">参赛作品管理</span> <span
                             class="arrow "></span>
 			</a></li>
-				<li class=""><a href="${base}/system/member/1-1"> <i
+				<li class=""><a th:href="@{/member/index/1/1}"> <i
                         class="fa fa-gift"></i> <span class="title">参赛用户管理</span> <span
                         class="arrow "></span>
 			</a></li>
 				</ul></li>
-		<!--</span>-->
-        <!--<span th:if="${userSession.role eq 'jsadmin'}">-->
+		</span>
+        <span th:if="${session.userSession.role eq 'jsadmin'}">
             <li class=""><a href="#"> <i class="fa fa-suitcase"></i> <span
                     class="title">角色创意</span> <span class="arrow "></span>
             </a>
                 <ul class="sub-menu">
-                    <li class=""><a href="${base}/system/enrol/getEnrol/1"> <i
+                    <li class=""><a th:href="@{/enrol/getEnrol/1}"> <i
                             class="fa fa-gift"></i> <span class="title">参赛报名信息管理</span> <span
                             class="arrow "></span>
                     </a></li>
-                    <li class=""><a href="${base}/system/member/1-2"> <i
+                    <li class=""><a th:href="@{/member/index/1/2}"> <i
                             class="fa fa-gift"></i> <span class="title">参赛用户管理</span> <span
                             class="arrow "></span>
                     </a></li>
@@ -67,16 +66,16 @@
             </li>
         </span>
 
-        <!--<span th:if="${userSession.role eq 'admin'}">-->
+        <span th:if="${session.userSession.role eq 'admin'}">
                         <li class=""><a href="#"> <i class="fa fa-suitcase"></i> <span
                                 class="title">文创北斗奖</span> <span class="arrow "></span>
             </a>
                 <ul class="sub-menu">
-                    <li class=""><a href="${base}/system/production/1-0"> <i
+                    <li class=""><a th:href="@{/production/index/1/0}"> <i
                             class="fa fa-gift"></i> <span class="title">参赛作品管理</span> <span
                             class="arrow "></span>
                     </a></li>
-                    <li class=""><a href="${base}/system/member/1-0"> <i
+                    <li class=""><a th:href="@{/member/index/1/0}"> <i
                             class="fa fa-gift"></i> <span class="title">参赛用户管理</span> <span
                             class="arrow "></span>
                     </a></li>
@@ -86,11 +85,11 @@
                     class="title">原创IP</span> <span class="arrow "></span>
             </a>
                 <ul class="sub-menu">
-                    <li class=""><a href="${base}/system/production/1-1"> <i
+                    <li class=""><a th:href="@{/production/index/1/1}"> <i
                             class="fa fa-gift"></i> <span class="title">参赛作品管理</span> <span
                             class="arrow "></span>
                     </a></li>
-                    <li class=""><a href="${base}/system/member/1-1"> <i
+                    <li class=""><a th:href="@{/member/index/1/1}"> <i
                             class="fa fa-gift"></i> <span class="title">参赛用户管理</span> <span
                             class="arrow "></span>
                     </a></li>
@@ -100,18 +99,18 @@
                     class="title">角色创意</span> <span class="arrow "></span>
             </a>
                 <ul class="sub-menu">
-                    <li class=""><a href="${base}/system/enrol/getEnrol/1"> <i
+                    <li class=""><a th:href="@{/enrol/getEnrol/1}"> <i
                             class="fa fa-gift"></i> <span class="title">参赛报名信息管理</span> <span
                             class="arrow "></span>
                     </a></li>
-                    <li class=""><a href="${base}/system/member/1-2"> <i
+                    <li class=""><a th:href="@{/member/index/1/2}"> <i
                             class="fa fa-gift"></i> <span class="title">参赛用户管理</span> <span
                             class="arrow "></span>
                     </a></li>
                 </ul>
             </li>
-        <!--</span>-->
-        <li class=""><a href="${base}/system/canhui/1"> <i class="fa fa-suitcase"></i> <span
+        </span>
+        <li class=""><a th:href="@{/canhui/index/1}"> <i class="fa fa-suitcase"></i> <span
                 class="title">参会信息列表</span> <span class="arrow "></span>
         </a>
 

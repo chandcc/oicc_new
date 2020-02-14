@@ -106,13 +106,13 @@
 																</span>
 															</span>
 															<span th:if="${query.type eq '2'}">
-																<span th:each="n : ${enrolList}">
-																	<span th:if="${stop ne 0 && user.id eq n.memberId}" th:text="'已提交'">
+																<span th:each="enrolList : ${enrolList}">
+																	<span th:if="${ user.id eq enrolList.memberId}" th:text="'已提交'">
 																	</span>
 																</span>
 															</span>
-															<span th:each="n : ${noEnrol}">
-																<span th:if="${user.id eq n.id}" th:text="'未提交'">
+															<span th:each="noEnrol : ${noEnrol}">
+																<span th:if="${user.id eq noEnrol.id}" th:text="'未提交'">
 																</span>
 															</span>
 															</td>

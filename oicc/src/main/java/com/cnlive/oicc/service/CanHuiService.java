@@ -44,14 +44,14 @@ public class CanHuiService {
 	 */
 	public PageInfo<TCanhui> getPage(int pageNo, String query) {
 		int pageSize = 15;
+		PageHelper.startPage(pageNo,pageSize);
 		if(StringUtils.isEmpty(query)){
 			List<TCanhui> canhuiList = tCanhuiMapper.paginate();
-			PageHelper.startPage(pageNo,pageSize);
 			PageInfo<TCanhui> canhuiPageInfo = new PageInfo<>(canhuiList);
 			return	canhuiPageInfo;
 		}else{
-			List<TCanhui> canhuiList = tCanhuiMapper.paginate1(query);
 			PageHelper.startPage(pageNo,pageSize);
+			List<TCanhui> canhuiList = tCanhuiMapper.paginate1(query);
 			PageInfo<TCanhui> canhuiPageInfo = new PageInfo<>(canhuiList);
 			return  canhuiPageInfo;
 		}

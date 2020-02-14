@@ -25,14 +25,13 @@ public class EnrolService {
 
     public PageInfo<TEnrol> getEnrolByPage(Integer pageNo, int pageSize, String query) {
 
+        PageHelper.startPage(pageNo, pageSize);
         if (StringUtils.isEmpty(query)) {
             List<TEnrol> tEnrolList = tEnrolMapper.getEnrolOrderbyinsertDate();
-            PageHelper.startPage(pageNo, pageSize);
             PageInfo<TEnrol> enrolPageInfo = new PageInfo<>(tEnrolList);
             return enrolPageInfo;
         } else {
             List<TEnrol> tEnrolList = tEnrolMapper.getEnrolOrderbyinsertDate1(query);
-            PageHelper.startPage(pageNo, pageSize);
             PageInfo<TEnrol> enrolPageInfo = new PageInfo<>(tEnrolList);
             return enrolPageInfo;
         }

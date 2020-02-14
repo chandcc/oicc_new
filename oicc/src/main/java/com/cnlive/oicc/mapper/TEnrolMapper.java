@@ -11,9 +11,9 @@ import java.util.List;
 */
 @org.apache.ibatis.annotations.Mapper
 public interface TEnrolMapper extends Mapper<TEnrol> {
-    @Select("select * from t_enrol order by insertDate desc")
+    @Select("select * from t_enrol order by insert_date desc")
     List<TEnrol> getEnrolOrderbyinsertDate();
-    @Select("select * from t_enrol where memberId like #{filde} or tel like #{filde} order by insertDate desc")
+    @Select("select * from t_enrol where member_id like #{filde} or tel like #{filde} order by insert_date desc")
     List<TEnrol> getEnrolOrderbyinsertDate1(String filde);
 
 

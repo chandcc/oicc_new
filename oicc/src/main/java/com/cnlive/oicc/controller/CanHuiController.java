@@ -7,6 +7,8 @@ import com.cnlive.oicc.service.CanHuiService;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -18,6 +20,7 @@ import javax.servlet.http.HttpServletResponse;
  *
  */
 @Controller
+@RequestMapping("/canhui")
 public class CanHuiController   {
 	private Logger logger = Logger.getLogger(CanHuiController.class);
 	@Autowired
@@ -26,13 +29,12 @@ public class CanHuiController   {
 	/**
 	 * 参会页面
 	 */
-	@RequestMapping("index")
-	public String index(HttpServletRequest request, HttpServletResponse response,int pageNo,String query){
+	@RequestMapping("/index/{pageNo}")
+	public String index(HttpServletRequest request, HttpServletResponse response, @PathVariable int pageNo, String query, Model model){
 		pageNo = pageNo== 0 ?1: pageNo;
-		request.setAttribute("chPage", canHuiService.getPage(pageNo,query));
-		request.getSession().setAttribute("query", null);
-		request.getSession().setAttribute("query", query);
-		return "canhui";
+		model.addAttribute("chPage", canHuiService.getPage(pageNo,query));
+		model.addAttribute("query", query);
+		return "canhui/canhui";
 	}
 	
 	

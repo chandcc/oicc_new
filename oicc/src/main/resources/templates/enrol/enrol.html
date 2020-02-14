@@ -2,7 +2,7 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
 <title>鄂尔多斯峰会后台管理系统</title>
-<%@include file="../common/res.html"%>
+	<div th:replace="../templates/common/res :: html"></div>
 <script src="/assets/js/jquery-1.11.2.min.js"
 	type="text/javascript"></script>
 
@@ -21,7 +21,7 @@
 	<div class='page-topbar '>
 		<div class='logo-area'></div>
 		<!-- head start -->
-		<%@include file="../common/head.html"%>
+		<div th:replace="../templates/common/head :: html"></div>
 		<!-- head end -->
 	</div>
 	<!-- END TOPBAR -->
@@ -32,7 +32,7 @@
 		<div class="page-sidebar ">
 			<!-- MAIN MENU - START -->
 			<!-- <c:set var="tindex" value="2"/> -->
-			<%@include file="../common/menu.html"%>
+			<div th:replace="../templates/common/menu :: html"></div>
 			<!-- MAIN MENU - END -->
 		</div>
 		<!--  SIDEBAR - END -->
@@ -58,12 +58,12 @@
 									<div class="dataTables_wrmessageer form-inline">
 										<div class="dataTables_wrapper form-inline">
 											<div class="input-group">
-												<form action="${base}/system/enrol/getEnrol/1" method="post">
-													<input type="text" name="query"
+												<form >
+													<input th:id="mobile" type="text"
 														class="form-control animated fadeIn"
-														placeholder="选手ID或手机号" value="${query}">
+														placeholder="选手ID或手机号" th:value="${query}">
 														
-													<input type='submit' class="input-group-addon input-focus"
+													<input type="button" th:onclick="javascript:chaxun()" class="input-group-addon input-focus"
 														value="查询">
 												</form>
 											</div>
@@ -71,7 +71,6 @@
 										<table class="table table-bordered">
 											<thead>
 												<tr>
-												<!-- 	<th>上传用户ID</th> -->
 													<th>姓名</th>
 													<th>手机号</th>
 													<th>年龄</th>
@@ -83,39 +82,55 @@
 											</thead>
 
 											<tbody>
-												<c:forEach items="${enrolPage.list}" var="u">
-													<tr class="odd">
-														<%-- <td style="width:10%">${u.memberId}</td> --%>
-														<td style="width:10%">${u.username}</td>
-														<td style="width:10%">${u.tel}</td>
-														<td style="width:8%">${u.age}</td>
-														<td style="width:24%;word-break:break-all">${u.company}</td>
-														<td style="width:8%"> 
-														<c:if test="${0 eq u.sex}">男</c:if>
-														<c:if test="${1 eq u.sex}">女</c:if>
-														</td>
-														<td style="width:18%">${u.IdNumber}</td>
-														<td style="width:22%"><fmt:formatDate value="${u.insertDate}"
-																pattern="yyyy-MM-dd HH:mm:ss" /></td>
+													<tr class="odd" th:each="u: ${enrolPage.list}">
+														<td style="width:10%" th:text="${u.username}">${u.username}</td>
+														<td style="width:10%"th:text="${u.tel}">${u.tel}</td>
+														<td style="width:8%"th:text="${u.age}">${u.age}</td>
+														<td style="width:24%;word-break:break-all"th:text="${u.company}">${u.company}</td>
+														<td style="width:8%" th:if="${0 eq u.sex}" th:text="'男'"></td> 
+														<td style="width:8%" th:if="${1 eq u.sex}" th:text="'女'"></td> 
+														<td style="width:18%"th:text="${u.IdNumber}">${u.IdNumber}</td>
+														<td style="width:22%">
+															<span th:text="${#dates.format(u.insertDate, 'yyyy-MM-dd HH:mm:ss')}">4564546</span></td>
 													</tr>
-												</c:forEach>
 											</tbody>
 										</table>
 										<div class="row">
 											<div class="col-xs-6">
-												<div class="dataTables_info">共${enrolPage.getTotalRow()}条数据/每页${enrolPage.getPageSize()}条</div>
+												<div class="dataTables_info">共<span th:text="${enrolPage.total}"></span>条数据/每页<span th:text="${enrolPage.size}"></span>条</div>
 											</div>
 											<div class="col-xs-6">
 												<!-- page start -->
 												<div class="dataTables_paginate paging_bootstrap">
 													<ul class="pagination">
-														<c:set var="currentPage" value="${enrolPage.pageNumber}" />
-														<c:set var="totalPage" value="${enrolPage.totalPage}" />
-														<c:set var="actionUrl" value="${base}/system/enrol/getEnrol/" />
-														
-														<c:set var="urlParas"
-															value="?query=${query}" />
-														<%@include file="../common/page.html"%>
+														<div class="pagination btn-sm">
+															<!--/production/index/{pageno}?moblie=$grou_id=-->
+															<li class="prev disabled"><a th:if="${enrolPage.hasPreviousPage} == false" th:text="'← Previous'">← Previous</a>
+															</li>
+															<li class="prev "><a th:if="${enrolPage.hasPreviousPage} == true"
+																				 th:href="@{/enrol/getEnrol/{pageno}(pageno=${enrolPage.prePage},query=${query})}"
+																				 th:text="'← Previous'">← Previous</a></li>
+															<li class="active"><a
+																	th:href="@{/enrol/getEnrol/{pageno}(pageno=${enrolPage.pageNum},query=${query})}"
+																	th:text="${enrolPage.pageNum}">1</a></li>
+															<li th:if="${enrolPage.hasNextPage}">
+																<a th:href="@{/enrol/getEnrol/{pageno}(pageno=${enrolPage.nextPage},query=${query})}"
+																   th:text="${enrolPage.nextPage}">2</a></li>
+															<li th:if="${enrolPage.nextPage+1 <enrolPage.pages && enrolPage.hasNextPage} ">
+																<a th:href="@{/enrol/getEnrol/{pageno}(pageno=${enrolPage.nextPage+1},query=${query})}"
+																   th:text="${enrolPage.nextPage+1}">3</a></li>
+															<li><span>…</span></li>
+															<li th:if="${enrolPage.pages} > 1">
+																<a th:href="@{/enrol/getEnrol/{pageno}(pageno=${enrolPage.pages-1},query=${query})}"
+																   th:text="${enrolPage.pages-1}">99</a></li>
+															<li>
+																<a th:href="@{/enrol/getEnrol/{pageno}(pageno=${enrolPage.pages},query=${query})}"
+																   th:text="${enrolPage.pages}">100</a></li>
+															<li class="next"><a th:if="${enrolPage.hasNextPage == true}"
+																				th:href="@{/enrol/index/{pageno}(pageno=${enrolPage.nextPage},query=${query})}"
+																				th:text="'Next →'">Next →</a></li>
+															<li class="next disabled"><a th:if="${enrolPage.hasNextPage == false}" th:text="'Next →'">Next →</a></li>
+														</div>
 													</ul>
 												</div>
 												<!-- page start -->
@@ -192,6 +207,15 @@
 		type="text/javascript"></script>
 	<!-- video checkbox end-->
 
+
+
+	<script th:inline="javascript">
+        //查询按钮
+        function chaxun() {
+            var mobile = $("#mobile").val();
+            location.href="/enrol/getEnrol/1?query="+mobile;
+        }
+	</script>
 
 
 
