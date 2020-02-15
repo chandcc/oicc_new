@@ -50,6 +50,11 @@ public class ApiServiceController {
 
     private Logger logger = Logger.getLogger(ApiServiceController.class);
 
+    @RequestMapping("/index")
+    public String index(){
+        return "api/index";
+    }
+
     @GetMapping("/login")
     public String login() {
         return "login";
@@ -67,7 +72,7 @@ public class ApiServiceController {
     /**
      * 登录
      */
-    @RequestMapping("/")
+    @RequestMapping("/loginValidate")
     @ResponseBody
     public ResultBean loginValidate(HttpServletRequest request, HttpServletResponse response) {
         String userName = null;

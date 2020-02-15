@@ -1,0 +1,1578 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta name="baidu-site-verification" content="FLy2j3kTzi"/>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <title>2020内蒙古和林格尔新区国际文化创意大会</title>
+</head>
+
+<link href="//resweb.cnliveimg.com/sites/cnlive/swiper.min.css" rel="stylesheet" type="text/css">
+<link type="text/css" rel="stylesheet" href="//resweb.cnliveimg.com/sites/eswc/animate.css" />
+<link type="text/css" rel="stylesheet" href="//resweb.cnliveimg.com/sites/eswc/layout.css?1" />
+<link type="text/css" rel="stylesheet" href="//resweb.cnliveimg.com/sites/eswc/style.css?34" />
+<script type="text/javascript" src="//resweb.cnliveimg.com/sites/eswc/jquery-1.8.3.min.js"></script>
+<script type="text/javascript" src="//resweb.cnliveimg.com/cnlive/main/js/common.js"></script>
+<script type="text/javascript" src="//resweb.cnliveimg.com/sites/fcds/timecountdown.min.js"></script>
+<script type="text/javascript" src="//resweb.cnliveimg.com/sites/cxxs/swiper.min.js"></script>
+<script type="text/javascript" src="//resweb.cnliveimg.com/sites/eswc/ZoomPic.js?1"></script>
+<script type="text/javascript" src="//resweb.cnliveimg.com/sites/eswc/jquery.form.js"></script>
+<script type="text/javascript" src="//resweb.cnliveimg.com/sites/eswc/main.js?121111"></script>
+<script type="text/javascript" src="//resweb.cnliveimg.com/sites/eswc/moxie.js"></script>
+<script type="text/javascript" src="//resweb.cnliveimg.com/sites/eswc/qiniu.js?1"></script>
+<script type="text/javascript" src="//resweb.cnliveimg.com/sites/eswc/plupload.dev.js"></script>
+<script>
+    var _hmt = _hmt || [];
+    (function() {
+        var hm = document.createElement("script");
+        hm.src = "//hm.baidu.com/hm.js?4627425aed488d04175e70d4539c8e72";
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(hm, s);
+    })();
+</script>
+<script>
+    (function(){
+        var bp = document.createElement('script');
+        var curProtocol = window.location.protocol.split(':')[0];
+        if (curProtocol === 'https') {
+            bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+        }
+        else {
+            bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+        }
+        var s = document.getElementsByTagName("script")[0];
+        s.parentNode.insertBefore(bp, s);
+    })();
+</script>
+
+<script type="text/javascript">
+    var userId = "0";
+    var activeId = '113';
+    var loginStatus = isLogin();
+    var appid = "";
+    var isLogin=false; //是否已登录
+    var haveProduct= "false";	//是否有上传作品
+    var isLoginPwd=true; //是否密码登录
+    var time = new Date("2020/05/16 00:00:00").getTime() / 1000;
+    xcsoft.countdown(time, function(obj) {
+        document.getElementById("id100").innerHTML = obj.day;
+        document.getElementById("id101").innerHTML = obj.hour;
+        document.getElementById("id102").innerHTML = obj.minute;
+        document.getElementById("id103").innerHTML = obj.second;
+    });
+
+    $(function(){
+        new ZoomPic("jswbox");
+        getLogin();
+    })
+    //判断是否登录
+    function getLogin(){
+        $.get("//hicc.cnlive.com/cnlive_oicc/api/isLogin/0",function(data){
+            if(data!=null&&data.code=="0"){
+                isLogin=true;
+                userId=data.data.id;
+                $("#nickName").text(data.data.nickName);
+                $("#onlogin").addClass("hide");
+                $("#outlogin").removeClass("hide");
+                $(".login").addClass("hide");
+                $(".loginMsg").removeClass("hide");
+                //判断是否已上传作品
+                $.get("//hicc.cnlive.com/cnlive_oicc/system/production/getProduction/0",function(production){
+                    if(production!=null&&production.code!="-1"){
+                        haveProduct="true";
+                        var title=production.title;
+                        var group =  production.group_id;
+                        var file_path =  production.file_path;
+                        var gruopName="";
+                        if(group=="1"){gruopName="传达领域";}
+                        else if(group=="2"){gruopName="商贸领域";}
+                        else if(group=="3"){gruopName="应用领域";}
+                        else if(group=="4"){gruopName="数学与科学领域";}
+                        else if(group=="5"){gruopName="物质领域";}
+                        $(".loginMsg").addClass("hide");
+                        if($(".award-menu li").eq(4).children("a").hasClass("active")){
+                            $(".zpsc").removeClass("hide");
+                            $(".uploadfile-msg").removeClass("hide");
+                        }
+                        $("#uploadfile-title").text(title);
+                        $("#uploadfile-group").text(gruopName);
+                        $("#file_down").attr("href",production.domain+"/"+file_path+"?attname=");
+                        $(".upload-content").addClass("hide");
+                        $(".upload-content-msg").addClass("hide");
+                        $("#pwdsuccess").addClass("hide");
+                        $("#usersuccess").addClass("hide");
+
+
+
+                    }
+
+                })
+            }
+        })
+    }
+
+
+    function baoming(){
+        if(isLogin){
+            if(haveProduct){
+                $("html,body").animate({scrollTop:1200},1000);
+            }else{
+                $("html,body").animate({scrollTop:2900},1000);
+            }
+
+            $(".award-menu li").eq(4).children("a").click();
+            $(".login").addClass("hide");
+            $(".loginMsg").addClass("hide");
+            $(".zpsc").removeClass("hide");
+        }else{
+            $("html,body").animate({scrollTop:2900},1000);
+            $(".award-menu li").eq(4).children("a").click();
+            $(".ljbm").removeClass("hide");
+        }
+
+    }
+</script>
+<script>
+    function isNull(data){
+        var flag=false;
+        if(data==null||$.trim(data)=="")flag=true;
+        return flag;
+    }
+
+    //显示登录窗口
+    function showLogin(){
+        $("#pwdsuccess").addClass("hide");
+        $("#usersuccess").addClass("hide");
+        $(".login").removeClass("hide");
+        $(".award-menu li").eq(4).children("a").click();
+    }
+    //显示资料上传窗口
+    function showUpload(){
+        $("html,body").animate({scrollTop:2900},1000);
+        $(".retrievalpasscg").addClass("hide");
+        $(".zpsc").removeClass("hide");
+        //判断是否上传作品 如果上传则显示上传成功 否则显示上传表单
+        if(haveProduct == "true"){
+            $(".uploadfile-msg").removeClass("hide");
+        }else{
+            $(".upload-content").removeClass("hide");
+        }
+    }
+
+    //注册
+    function zhuce(){
+        $(".prompt.zhuce").addClass("hide");
+        if($("#xieyi")[0].checked!=true){
+            $(".prompt.zhuce").text("请您阅读并同意用户协议！");
+            $(".prompt.zhuce").removeClass("hide");
+            return;
+        }
+
+
+        var zhuceName = $("#zhuceUserName")[0].value;
+        if(isNull(zhuceName)){
+            $(".prompt.zhuce").text("用户名不能为空！");
+            $(".prompt.zhuce").removeClass("hide");
+            return;
+        }
+        var zhucePwd = $("#zhucePwd")[0].value;
+        if(isNull(zhucePwd)){
+            $(".prompt.zhuce").text("请输入密码！");
+            $(".prompt.zhuce").removeClass("hide");
+            return;
+        }
+        var mobile = $("#mobile")[0].value;
+        if(isNull(mobile)){
+            $(".prompt.zhuce").text("请输入手机号！");
+            $(".prompt.zhuce").removeClass("hide");
+            return;
+        }
+        var zhuceVcode = $("#zhuceVcode")[0].value;
+        if(isNull(zhuceVcode)){
+            $(".prompt.zhuce").text("请输入验证码！");
+            $(".prompt.zhuce").removeClass("hide");
+            return;
+        }
+
+        $("#zhuce").ajaxForm({
+            success : function(data) {
+                if(data!=null&&data.code=="0"){
+                    alert("注册成功");
+                    $(".ljbm-bottom > div").addClass("hide");
+                    $(".login").removeClass("hide");
+                }else if(data!=null){
+                    alert(data.message);
+                }else{
+                    $(".prompt.zhuce").text("网络错误，请稍后尝试！");
+                    $(".prompt.zhuce").removeClass("hide");
+                }
+            }
+        }).submit();
+    }
+    //找回密码
+    function zhaohui(){
+        var pwdMobile=$("#pwdMobile")[0].value;
+        if(isNull(pwdMobile)){
+            $(".prompt.pwd").text("用户名不能为空！");
+            $(".prompt.pwd").removeClass("hide");
+            return;
+        }
+        var pwdVcode=$("#pwdVcode")[0].value;
+        if(isNull(pwdVcode)){
+            $(".prompt.pwd").text("请输入验证码！");
+            $(".prompt.pwd").removeClass("hide");
+            return;
+        }
+        var newPwd=$("#newPwd")[0].value;
+        if(isNull(newPwd)){
+            $(".prompt.pwd").text("请输入重置密码！");
+            $(".prompt.pwd").removeClass("hide");
+            return;
+        }
+        var newPwd1=$("#newPwd1")[0].value;
+        if(isNull(newPwd1)){
+            $(".prompt.pwd").text("请再次输入重置密码！");
+            $(".prompt.pwd").removeClass("hide");
+            return;
+        }
+        if(newPwd!=newPwd1){
+            $(".prompt.pwd").text("两次输入的密码不一致！");
+            $(".prompt.pwd").removeClass("hide");
+            return;
+        }
+
+
+        $("#zhaohui").ajaxForm({
+            success : function(data) {
+                if(data!=null&&data.code=="0"){
+                    $("#pwdsuccess").removeClass("hide");
+                    $(".retrievalpass").addClass("hide");
+                }else if(data!=null){
+                    $(".prompt.pwd").text(data.message);
+                    $(".prompt.pwd").removeClass("hide");
+                }else{
+                    $(".prompt.pwd").text("网络错误，请稍后尝试");
+                    $(".prompt.pwd").removeClass("hide");
+                }
+            }
+        }).submit();
+    }
+    //文件上传
+    var title=null;
+    var group=null;
+    function upfile(){
+        isError=false;
+        $(".prompt.fileUpMsg").addClass("hide");
+        group =  $("#group").val();
+        if(isNull(group)){
+            $(".prompt.fileUpMsg").text("请选择组别！");
+            $(".prompt.fileUpMsg").removeClass("hide");
+            return;
+        }
+        title= $("#fileTitle").val();
+        if(isNull(title)){
+            $(".prompt.fileUpMsg").text("请填写作品名称！");
+            $(".prompt.fileUpMsg").removeClass("hide");
+            return;
+        }
+        UploadBean.start();
+    }
+    //登录
+    function loginMsg(){
+        $(".prompt.enter").addClass("hide");
+        var loginName = $("#loginUserName")[0].value;
+        if(isNull(loginName)){
+            $(".prompt.enter").text("用户名不能为空！");
+            $(".prompt.enter").removeClass("hide");
+            return;
+        }
+        if(!isMobile(loginName)){
+            $(".prompt.enter").text("请使用手机号登录！");
+            $(".prompt.enter").removeClass("hide");
+            return;
+        }
+        if(isLoginPwd){
+            var loginPwd = $("#loginPwd")[0].value;
+            if(isNull(loginPwd)){
+                $(".prompt.enter").text("请输入密码！");
+                $(".prompt.enter").removeClass("hide");
+                return;
+            }
+        }else{
+            var loginVcode = $("#loginVcode")[0].value;
+            if(isNull(loginVcode)){
+                $(".prompt.enter").text("请输入验证码！");
+                $(".prompt.enter").removeClass("hide");
+                return;
+            }
+
+        }
+        $("#onload").addClass("hide");
+        $("#loading").removeClass("hide");
+        $("#loginMsg").ajaxForm({
+            success : function(data) {
+                if($("#remember")[0].checked&&isLoginPwd){
+                    //记住密码
+                    var date = new Date();
+                    date.setDate(date.getDate() + 15);
+                    document.cookie = "username="+loginName+";expires=" + date.toGMTString();
+                }
+                if(data!=null&&data.code=="0"){
+                    getLogin();
+                }else if(data!=null){
+                    $(".prompt.enter").text(data.message);
+                    $(".prompt.enter").removeClass("hide");
+                }else{
+                    $(".prompt.enter").text("网络错误，请稍后重试");
+                    $(".prompt.enter").removeClass("hide");
+                }
+                $("#onload").removeClass("hide");
+                $("#loading").addClass("hide");
+            },
+            error:function(data){
+                $("#onload").removeClass("hide");
+                $("#loading").addClass("hide");
+                $(".prompt.enter").text("网络错误，请稍后重试");
+                $(".prompt.enter").removeClass("hide");
+            }
+        }).submit();
+    }
+
+    var isError=false;
+    UploadBean.init({
+        dataUrl :"//localhost:8081/user/getToken",
+        UploadProgress:function(rs){
+            $("#save").addClass("hide");
+            $("#saving").removeClass("hide");
+            var progress = rs.percent+"%";
+            $("#progress").text(progress);
+            $("#progressShow").css("width",progress);
+            if(rs.percent<100){
+                $("#progressForm").removeClass("hide");
+                $("#progressForm1").removeClass("hide");
+            }else{
+                $("#progressForm").addClass("hide");
+                $("#progressForm1").addClass("hide");
+            }
+
+        },
+        FileUploaded:function(rs){
+        },
+        BeforeUpload:function(f,rs){
+
+            $.ajax({
+                url:"//hicc.cnlive.com/cnlive_oicc/uploadFile/0",
+                async:false,
+                data:{"group":group,"title":title,"fileName":f.files[0].name},
+                success:function(data){
+                    if(data!=null&&data.code=="0"){
+                        UploadBean.opt.filePath=data.data;
+                        $(".retrievalpasscg").removeClass("hide");
+                    }else{
+                        $(".prompt.fileUpMsg").text("作品上传失败！");
+                        $(".prompt.fileUpMsg").removeClass("hide");
+                        UploadBean.stop();
+                        return;
+                    }
+                }
+            })
+            return UploadBean.opt.filePath;
+        },
+        Error: function(up, err, errTip) {
+            isError=true;
+            $("#save").removeClass("hide");
+            $("#saving").addClass("hide");
+            $.get("//hicc.cnlive.com/cnlive_oicc/isUpFile/0",{"is_upload":-1},function(data){
+            })
+            if(err.code=='-601'){
+                $(".prompt.fileUpMsg").text("文件格式错误，请以压缩包(tar、zip格式)的形式上传！");
+            }else{
+                $(".prompt.fileUpMsg").text(errTip);
+            }
+
+            $(".prompt.fileUpMsg").removeClass("hide");
+
+        },
+        UploadComplete:function(rs){
+            $("#save").removeClass("hide");
+            $("#saving").addClass("hide");
+            if(rs.files.length==0){
+                $(".prompt.fileUpMsg").text("请选择文件！");
+                $(".prompt.fileUpMsg").removeClass("hide");
+            }else{
+                if(!isError){
+                    $.get("/cnlive_oicc/isUpFile/0",{"is_upload":1},function(data){
+                        if(data!=null&&data.code=="0"){
+                            getLogin();
+                        }
+                    })
+                }else{
+                    isError=false;
+                }
+
+            }
+
+        }
+    });
+</script>
+<script>
+    //验证手机号
+    function isMobile(mobile){
+        var result=true;
+        if(!(/^1[34578]\d{9}$/.test(mobile))){
+            result= false;
+        }
+        return result;
+    }
+    //验证邮箱
+    function isEmail(email){
+        var result=true;
+        if(!( /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/.test(email))){
+            result= false;
+        }
+        return result;
+    }
+
+
+    //登出
+    function outLogin(){
+        $.get("//hicc.cnlive.com/cnlive_oicc/api/outLogin",function(data){
+            if(data!=null&&data.code=="0"){
+                location.reload();
+            }else{
+                alert("网络错误，请稍后尝试");
+            }
+        })
+    }
+
+
+    //注册，获取验证码
+    var date = 59;
+    var msgDate;
+    function getMsg(){
+        var mobile=$("#mobile")[0].value;
+        if(isNull(mobile)){
+            $(".prompt.zhuce").text("请输入手机号！");
+            $(".prompt.zhuce").removeClass("hide");
+            return;
+        }
+        if(!isMobile(mobile)){
+            $(".prompt.zhuce").text("手机号无效！");
+            $(".prompt.zhuce").removeClass("hide");
+            return;
+        }
+        $(".prompt.zhuce").addClass("hide");
+        $.get("//hicc.cnlive.com/cnlive_oicc/api/validateMobile",{"mobile":mobile},function(data){
+            if(data.code==0){
+                $("#msg").addClass("hide");
+                $("#msgDate").text("重发验证码(60)");
+                $("#msgDate").removeClass("hide");
+                date = 59;
+                msgDate = setInterval("timing()",1000);
+            }else{
+                var msg=data.message;
+                if(msg=="该手机号已存在"){msg="您已注册过视讯中国账号，直接登陆即可！"}
+                $(".prompt.zhuce").text(msg);
+                $(".prompt.zhuce").removeClass("hide");
+            }
+        })
+    }
+    function timing(){
+        if(date>0){
+            $("#msgDate").text("重发验证码("+date+")");
+            date--;
+        }else{
+            $("#msg").removeClass("hide");
+            $("#msgDate").addClass("hide");
+            clearInterval(msgDate);
+        }
+    }
+    //找回密码，获取验证码
+    var pwdDate = 59;
+    var pwdmsgDate;
+    function pwdMsg(){
+        var pwdMobile=$("#pwdMobile")[0].value;
+        if(isNull(pwdMobile)){
+            $(".prompt.pwd").text("请输入手机号！");
+            $(".prompt.pwd").removeClass("hide");
+            return;
+        }
+        if(!isMobile(pwdMobile)){
+            $(".prompt.pwd").text("手机号无效！");
+            $(".prompt.pwd").removeClass("hide");
+            return;
+        }
+        $(".prompt.pwd").addClass("hide");
+        $.get("//hicc.cnlive.com/cnlive_oicc/api/sendResetPwdVcode",{"mobile":pwdMobile},function(data){
+            if(data.code==0){
+                $("#pwdMsg").addClass("hide");
+                $("#pwdMsgDate").text("重发验证码(60)");
+                $("#pwdMsgDate").removeClass("hide");
+                pwdDate = 59;
+                pwdmsgDate = setInterval("pwdtiming()",1000);
+            }else{
+                $(".prompt.pwd").text(data.message);
+                $(".prompt.pwd").removeClass("hide");
+            }
+        })
+    }
+    function pwdtiming(){
+        if(pwdDate>0){
+            $("#pwdMsgDate").text("重发验证码("+pwdDate+")");
+            pwdDate--;
+        }else{
+            $("#pwdMsg").removeClass("hide");
+            $("#pwdMsgDate").addClass("hide");
+            clearInterval(pwdmsgDate);
+        }
+    }
+
+    //短信登录，获取验证码
+    var loginDate = 59;
+    var loginmsgDate;
+    function getLoginMsg(){
+        var loginName=$("#loginUserName")[0].value;
+        if(isNull(loginName)){
+            $(".prompt.enter").text("请输入手机号！");
+            $(".prompt.enter").removeClass("hide");
+            return;
+        }
+        if(!isMobile(loginName)){
+            $(".prompt.enter").text("手机号无效！");
+            $(".prompt.enter").removeClass("hide");
+            return;
+        }
+        $(".prompt.enter").addClass("hide");
+        $.get("//hicc.cnlive.com/cnlive_oicc/api/sendResetMsgLoginVcode",{"mobile":loginName},function(data){
+            if(data.code==0){
+                $("#loginMsgVcode").addClass("hide");
+                $("#loginDate").text("重发验证码(60)");
+                $("#loginDate").removeClass("hide");
+                loginDate = 59;
+                loginmsgDate = setInterval("logintiming()",1000);
+            }else{
+                $(".prompt.enter").text(data.message);
+                $(".prompt.enter").removeClass("hide");
+
+            }
+        })
+    }
+    function logintiming(){
+        if(loginDate>0){
+            $("#loginDate").text("重发验证码("+loginDate+")");
+            loginDate--;
+        }else{
+            $("#loginMsgVcode").removeClass("hide");
+            $("#loginDate").addClass("hide");
+            clearInterval(loginmsgDate);
+        }
+    }
+</script>
+<script>
+    function canhui(){
+        $("#canhuiPrompt").addClass("hide");
+        var name = $("#canhuiName").val();
+        if(isNull(name)){
+            $("#canhuiPrompt").text("请输入姓名！");
+            $("#canhuiPrompt").removeClass("hide");
+            return;
+        }
+        var mobile = $("#canhuiMobile").val();
+        if(isNull(mobile)){
+            $("#canhuiPrompt").text("请输入手机号！");
+            $("#canhuiPrompt").removeClass("hide");
+            return;
+        }
+        if(!isMobile(mobile)){
+            $("#canhuiPrompt").text("手机号无效！");
+            $("#canhuiPrompt").removeClass("hide");
+            return;
+        }
+
+        var email = $("#canhuiEmail").val();
+        if(isNull(email)){
+            $("#canhuiPrompt").text("请输入邮箱！");
+            $("#canhuiPrompt").removeClass("hide");
+            return;
+        }
+        if(!isEmail(email)){
+            $("#canhuiPrompt").text("邮箱格式错误！");
+            $("#canhuiPrompt").removeClass("hide");
+            return;
+        }
+
+
+        $("#canhuiPrompt").addClass("hide")
+        $("#canhui").ajaxForm({
+            success : function(data) {
+                alert(data.message);
+                if(data.code=='0'){
+                    $("#canhui input").val("");
+                }
+            },
+            error:function(data){
+                alert("网络错误");
+            }
+        }).submit();
+
+    }
+
+</script>
+<body>
+<div class="nav-bar">
+    <div class="set-width">
+        <div class="language">
+            <a href="http://hicc.cnlive.com/index.html">中文</a>|<a href="http://hicc.cnlive.com/en/index.html">English</a>      
+            <a href="javascript:void(0);" id="onlogin">登  录</a>
+            <div class="hide" id="outlogin" style="float: right;">
+                <a href="javascript:void(0);"  id="nickName"></a>|
+                <a href="javascript:outLogin();"  style="margin-right:10px;">注  销</a>
+            </div>
+        </div>
+        <ul>
+            <li class="active"><a href="#">主页</a></li>
+            <li><a href="#jianjie">大会简介</a></li>
+            <li><a href="#meeting">和林格尔峰会</a></li>
+            <li><a href="#chilechuan">敕勒川文创奖</a></li>
+            <li><a href="#zuopin">文创作品展</a></li>
+            <li><a href="#about">关于我们</a></li>
+        </ul>
+        <div class="logo">
+            <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191122111013763_626.png" />
+        </div>
+    </div>
+</div>
+<div class="banner">
+    <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191204095918244_887.jpg" />
+    <div class="big-logo">
+        <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191122110938762_440.jpg" />
+    </div>
+    <div class="logo-title">
+        <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191122110846561_872.jpg" />
+    </div>
+    <div class="banner-video">
+        <!--顶部宣传视频 -->
+        <div>
+
+            <video id="video1"  autoplay="autoplay" controls="controls">
+                <source src="http://oicc.vods2.cnlive.com/513/vod/2019/1216/513_07e55fb4bcc3443bb1317d16bc05114b/ff8080816efd1b85016f0c6170217bfc_800.mp4" type="video/mp4">
+            </video>
+
+            <script>
+
+                /*var vid1 = document.getElementById("video1");
+
+                vid1.onended = function() {
+                 $("#video1").addClass("hide");
+
+                };*/
+
+
+            </script>
+        </div>
+    </div>
+
+    <div class="djs">
+        <!--<a href="http://hicc.cnlive.com/wcother/detail2_2017_10/09/880292.html" id="banner-ljbm">成绩公告</a>-->
+        <!--倒计时-->
+        <div class="countdown clearfix">
+            <p>距离报名截止</p>
+            <div class="tmeW">
+                <div id="id100" class="time">--</div>
+                <a>天</a>
+                <div id="id101" class="time">--</div>
+                <a>时</a>
+                <div id="id102" class="time">--</div>
+                <a>分</a>
+                <div id="id103" class="time">--</div>
+                <a>秒</a>
+            </div>
+        </div>
+    </div>
+
+</div>
+<!--大会介绍-->
+<div class="introduce" id="jianjie">
+    <div class="set-width">
+        <div class="title">
+            <img src="http://yweb0.cnliveimg.com/sites/eswc/170812093722781_267.png" />
+        </div>
+        <div class="introduce-content">
+            <h2>新时代，文化创意新使命</h2>
+            <div class="introduce-describe">
+
+                <p>大会以“文化创意赋能”为指导，坚持“筑平台、促改革、创价值”的根本目标，积极推动文化创意＋破解新时代中国的主要矛盾，充分挖掘国内外文化创意设计人才和作品，推动文化创意和设计服务与内蒙古和林格尔新区乃至内蒙古自治区经济社会发展实现对接。</p>
+
+            </div>
+        </div>
+
+        <!--参会报名-->
+        <div class="ljbm" id="chbm">
+            <div class="set-width">
+                <div class="ljbm-bottom">
+                    <div class="register" style="display:block;">
+                        <div class="title">
+                            <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191205101113975_192.png" />
+                        </div>
+                        <div class="register-content">
+                            <form action="//hicc.cnlive.com/cnlive_oicc/system/canhui/apply" method="post" autocomplete="off" id="canhui">
+                                <div class="prompt hide" id="canhuiPrompt">用户名不能为空！</div>
+                                <div class="form-group">
+                                    <span><span class="red">*</span>用户名</span>
+                                    <input type="text" name="userName" id="canhuiName" placeholder="请输入姓名" />
+                                </div>
+                                <div class="form-group">
+                                    <span><span class="red">*</span>手机号</span>
+                                    <input type="text" name="mobile" id="canhuiMobile" placeholder="请输入手机号" />
+                                </div>
+                                <div class="form-group">
+                                    <span><span class="red">*</span>Email</span>
+                                    <input type="text" name="email" id="canhuiEmail"  placeholder="请输入Email" />
+                                </div>
+                                <div class="form-group">
+                                    <button type="button" class="submit" onclick="canhui();">报      名</button>
+                                </div>
+
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</div>
+
+<!--鄂尔多斯峰会-->
+<div class="meeting" id="meeting">
+    <div class="set-width">
+        <div class="title">
+            <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191204100336419_316.png" />
+        </div>
+        <div class="meeting-content">
+            <!--鄂尔多斯峰会轮播图-->
+            <cms:container name="usercontainer11" width="900" maxElements="10" type="maincontent"></cms:container>
+            <div class="meeting-desc">
+                <p>峰会包括大咖名人媒体见面会(红毯秀)暨欢迎酒会、大会主论坛和分论坛、开、闭幕式及颁奖仪式。拟邀请国家有关部委领导、国内外的文化创意设计大师、知名设计团队、国内外文化创意领域的专家学者,以及其他相关人员参会,为中国及世界的文化创意领袖人物提供交际和思想激荡的交流平台。</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--北斗奖-->
+<div class="award" id="chilechuan">
+    <div class="set-width">
+        <div class="title">
+            <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191205142316260_984.jpg" />
+        </div>
+    </div>
+    <div class="award-top">
+        <div class="set-width">
+            <p>2020内蒙古和林格尔新区国际文化创意大会“敕勒川文创奖”，由奖杯、证书、奖金三部分组成。大会将邀请“一带一路”沿线部分国家名师、优秀创意团队和国内名师、优秀创意团队携文创设计作品参展, 角逐1座敕勒川文创奖大奖、8座敕勒川文创奖金奖、16座敕勒川文创奖银奖、36座敕勒川文创奖铜奖。所有优秀文创设计作品将被选定进入和林格尔国际文化创意IP库, 由和林格尔文化创意园进行孵化。</p>
+            <ul class="award-menu">
+                <li>
+                    <a class="active" href="javascript:void(0);">五大领域</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0);">奖项类别</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0);">奖项评委</a>
+                </li>
+                <li>
+                    <a href="javascript:void(0);">参赛须知</a>
+                </li>
+                <!--<li>
+                    <a href="javascript:void(0);">立即报名</a>
+                </li>
+           <li>
+                    <a href="javascript:void(0);">参会报名</a>
+                </li>-->
+                <li>
+                    <a href="javascript:void(0);">作品上传</a>
+                </li>
+            </ul>
+        </div>
+        <div class="award-top-content">
+            <!--涉及领域-->
+            <div class="sjly">
+                <div class="set-width">
+                    <div id="jswbox">
+                        <pre class="prev">prev</pre>
+                        <pre class="next">next</pre>
+                        <ul>
+                            <li li-id="0">
+                                <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191209140829506_347.png" yy-src="http://oicc.ys1.cnliveimg.com/sites/eswc/191209140829506_347.png" data-src="http://oicc.ys1.cnliveimg.com/sites/eswc/191209141849663_708.png" alt="商贸领域" />
+                            </li>
+                            <li li-id="1">
+                                <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191209140944605_124.png" yy-src="http://oicc.ys1.cnliveimg.com/sites/eswc/191209140944605_124.png" data-src="http://oicc.ys1.cnliveimg.com/sites/eswc/191209141101902_321.png" alt="物质领域" />
+                            </li>
+                            <li li-id="2">
+                                <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191209141230927_318.png" yy-src="http://oicc.ys1.cnliveimg.com/sites/eswc/191209141230927_318.png" data-src="http://oicc.ys1.cnliveimg.com/sites/eswc/191209141158646_052.png" alt="传达领域" />
+                            </li>
+                            <li li-id="3">
+                                <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191209141313482_196.png" yy-src="http://oicc.ys1.cnliveimg.com/sites/eswc/191209141313482_196.png" data-src="http://oicc.ys1.cnliveimg.com/sites/eswc/191209141358302_493.png" alt="数学与科学领域" />
+                            </li>
+                            <li li-id="4">
+                                <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191209141446403_834.png" yy-src="http://oicc.ys1.cnliveimg.com/sites/eswc/191209141446403_834.png" data-src="http://oicc.ys1.cnliveimg.com/sites/eswc/191209141422992_634.png" alt="物质领域" />
+                            </li>
+
+                        </ul>
+                    </div>
+                    <div id="jswbox-desc">
+                        <ul>
+                            <li class="hide">
+                                <p>商业设计、新产品研发、包装设计、产品设计、服务设计</p>
+                            </li>
+                            <li class="hide">
+                                <p>体验设计、游戏设计、交互设计、软件设计、软件研发、软件工程、系统设计、用户体验设计、用户界面设计、网页易操作设计、网页设计</p>
+                            </li>
+                            <li>
+                                <p>书籍设计、色彩设计、传达设计、展示设计、图形设计 、资讯设计、教学设计、制作设计、音效设计、<br />舞台设计、字体设计、印刷设计、移动图形设计、新闻报刊设计、视觉传达设计、内容/编排与内容设计</p>
+                            </li>
+                            <li class="hide">
+                                <p>组合设计、实验设计</p>
+                            </li>
+                            <li class="hide">
+                                <p>建筑设计、建筑工程、汽车设计、手机设计、陶瓷和玻璃设计、环境设计、服装设计、插花设计、<br />家具设计、园林设计、规划设计、工业设计、室内设计、景观设计、机械工程设计、永续设计、城市设计</p>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <!--奖项类别-->
+            <div class="category hide">
+                <div class="set-width">
+                    <ul>
+                        <li>
+                            <div class="categoryName">敕勒川<br />文创奖<br /><span>大奖</span></div>
+                            <div class="categoryDesc">
+                                <h3>最佳商贸领域设计 、最佳应用领域设计、最佳视觉传达领域设计、最佳数学与科学领域设计、 最佳物质领域设计</h3>
+                                <p>敕勒川文创奖大奖共1座奖杯, 奖金500000元人民币;获奖者将获得“敕勒川文创奖”大奖奖杯、证书及奖金。 </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="categoryName">敕勒川<br />文创奖<br /><span>金奖</span></div>
+                            <div class="categoryDesc">
+                                <h3>最佳商贸领域设计 、最佳应用领域设计、最佳视觉传达领域设计、最佳数学与科学领域设计、 最佳物质领域设计</h3>
+                                <p>敕勒川文创奖金奖共8座奖杯,奖金20000元人民币；获奖者将获得“敕勒川文创奖”金奖奖杯、证书及奖金。</p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="categoryName">敕勒川<br />文创奖<br /><span>银奖</span></div>
+                            <div class="categoryDesc">
+                                <h3>最佳商贸领域设计 、最佳应用领域设计、最佳视觉传达领域设计、最佳数学与科学领域设计、 最佳物质领域设计</h3>
+                                <p>敕勒川文创奖银奖共16座奖杯,奖金10000元人民币;获奖者将获得“敕勒川文创奖”银奖奖杯、证书及奖金。 </p>
+                            </div>
+                        </li>
+                        <li>
+                            <div class="categoryName">敕勒川<br />文创奖<br /><span>铜奖</span></div>
+                            <div class="categoryDesc">
+                                <h3>最佳商贸领域设计 、最佳应用领域设计、最佳视觉传达领域设计、最佳数学与科学领域设计、 最佳物质领域设计</h3>
+                                <p>敕勒川文创奖铜奖共36座奖杯,奖金5000元人民币;获奖者将获得“敕勒川文创奖”铜奖奖杯、证书及奖金。 </p>
+                            </div>
+                        </li>
+                    </ul>
+                    <p class="text-right">注：本次大赛奖金额为税前奖金额</p>
+                </div>
+            </div>
+            <!--大赛评委-->
+            <div class="judges hide">
+                <div class="set-width">
+                    <ul>
+                        <li style="height: 250px;">
+                            <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191230092005009_265.jpg" />
+                            <div class="judges-content-desc">
+                                <h3>王齐国 评委会主席</h3>
+                                <p>中国文化创意+倡导者，著名文化创意专家、品牌专家。北京大学文化产业研究院教授，原北京大学中国品牌研究中心主任；国家文化产业创新与发展研究基地研究员；北京九州一方文化创意院院长。国家广电总局《电影促进法》咨询专家组成员；文化部国家文化产业示范园区评审专家、北京市人民政府文化创意产业专家、扶持资金评审专家、全国文化中心建设顾问；中国城市文化创意指数研究报告首席专家；中国CBS品牌认证标准体系首席专家；中国品牌价值评估体系首席专家。</p>
+                            </div>
+                        </li>
+                        <li style="height: 250px;">
+                            <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191230092010743_491.jpg" />
+                            <div class="judges-content-desc">
+                                <h3>宋慰祖</h3>
+                                <p>北京市政协常委，高级工程师；北京国际设计周、中国设计红星奖、设计之都申请的发起者、组织者和实践者。北京设计学会的发起人。北京国际设计周战略顾问。参与起草工信部、科技部、教育部、财政部等十一部委《工业设计发展的若干指导意见》，国务院关于《文化创意和设计服务与相关产业融合发展的意见》、北京市《促进设计产业发展的若干意见》，主编出版了中国首部《2016中国工业设计年鉴》、《2017中国设计发展蓝皮书》等。</p>
+                            </div>
+                        </li>
+                        <li>
+                            <img src="http://yweb1.cnliveimg.com/sites/eswc/170815181135353_786.jpg" />
+                            <div class="judges-content-desc">
+                                <h3>鲁晓波</h3>
+                                <p>清华大学美术学院院长、清华大学艺术与科学研究中心主任，教授，博士生导师。中国美术家协会副主席。曾兼任教育部工业设计教学指导委员会副主任、中国科协全国委员和中国工业设计协会副会长等职务。</p>
+                            </div>
+                        </li>
+
+
+
+                    </ul>
+                    <div class="clear"></div>
+                    <h2>持续更新中……</h2>
+                </div>
+            </div>
+            <!--参赛须知-->
+            <div class="notice hide">
+                <div class="set-width">
+                    <div class="notice-content">
+                        <ul class="notice-title">
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                            <li></li>
+                        </ul>
+                        <div class="clear"></div>
+                        <ul class="notice-title-desc">
+                            <li>
+                                <div style="float: left;width: 380px;">
+                                    <h3>作品征集：</h3>
+                                    <p class="mb-20">2019年12月16日～2020年5月15日</p>
+                                    <h3>作品评审：</h3>
+                                    <p>初评2020年5月16～17日；终评2020年5月18日</p>
+                                </div>
+                                <div style="float: left;width: 305px;display:none;">
+                                    <h3>作品展览（线上）：</h3>
+                                    <p class="mb-20">2020</p>
+                                    <h3>作品展览（线下）：</h3>
+                                    <p>2020.6.5-2020.6.6</p>
+
+                                </div>
+                                <div style="float: left;width: 395px;">
+                                    <h3>颁奖：</h3>
+                                    <p class="mb-20">2020年6月6日（闭幕式晚会）</p>
+                                    <h3>获奖入围作品公布（线上）：</h3>
+                                    <p>2020年5月20日（公示期10天）</p>
+                                </div>
+                            </li>
+                            <li class="hide">
+                                <p>主要征集范围为“一带一路”国家和地区。凡与商贸领域、应用领域、传达领域、数学与科学领域、物质领域等领域产品相关的研发机构、高等院校、品牌企业、设计公司、生产厂商、广告公司以及工艺美术品设计专业人士和创意设计爱好者，均可以单位或个人名义参赛。鼓励国内自主创新、知名品牌企业参赛。</p>
+                                <h2 style="margin: 10px 0;">特别提示：不鼓励获得其它奖项（已超两年）的作品参赛。</h2>
+                                <h3>一、价值优先</h3>
+                                <p class="mb-20">健康向上，内涵丰富。具有文化创意＋赋能传统产业的特质。</p>
+                                <h3>二、审美价值</h3>
+                                <p class="mb-20">能够感动心灵。创造性使用优秀文化元素，较好提升产品形象，舒适、美观、协调，具有艺术性、观赏性；色彩搭配合理，形态体现科技与艺术的结合。充分使用本民族的传统文化和技艺丰富创意设计内涵。</p>
+                                <h3>三、创新性</h3>
+                                <p class="mb-20">设计理念具有前瞻性，追求新奇独特，创新点突出。充分利用新科技、新材料，体现创作者的想象力和创造力。</p>
+                                <h3>四、符合绿色环保、可持续发展要求</h3>
+                                <p class="mb-20">在设计、制造、流通、使用、回收全过程注重生态、节能、环保、低碳健康的理念。</p>
+                                <h3>五、工艺精良，品质可靠，材料合理</h3>
+                                <p class="mb-20">具有较高商业价值，创意因素对提高产品附加值和品牌价值贡献较大。</p>
+                            </li>
+                            <li class="hide">
+                                <h3>一、作品提交</h3>
+                                <p class="mb-20">每套作品需提供3张彩色效果图和实物照片（精度不低于300dpi.jpg）和200字左右的设计说明。设计图纸和说明文字均不得出现作者的任何信息和记号。（提交参赛作品设计说明，包括设计思想、设计目的、定位、使用方法、知识产权情况等。要求文字精炼，要点清晰。传统工艺需注明其工艺特征。）</p>
+                                <h3>二、报名渠道</h3>
+                                <p class="mb-20">需登录大赛官方网站http://hicc.cnlive.com提交报名作品。</p>
+                                <h3>三、作品产权</h3>
+                                <p class="mb-20">作品不得仿冒已上市的产品或侵犯他人知识产权的产品。所有参赛作品均需做知识产权声明，侵权者将承担给大会造成的影响和损失。参赛者或参赛单位要保证参赛作品不侵犯他人知识产权，如自有知识产权，需要提交相关的权属证书复印件。</p>
+                                <h3>四、投产产品</h3>
+                                <p class="mb-20">投产产品需报送实物。</p>
+                                <h3>五、参赛作品约定</h3>
+                                <p class="mb-20">参赛作品的文字说明材料、照片及实物均不退还本人。报名后不符合参赛要求的作品将通知报送者。</p>
+                                <h3>六、参展声明</h3>
+                                <p>报名后，符合参赛规则的作品所有者应同意参加大赛主办单位的展示会及有关宣传推荐活动。被举办方选定的作品在展览后授权举办方进行IP孵化。</p>
+                                <h3>七、费用说明</h3>
+                                <p>本届评奖免收报名费和评审费。设计费、模型、样品、产品制作费用等均由参赛者自行负担。大件展品的运费由主办方承担。</p>
+                            </li>
+                            <li class="hide">
+                                <!--评审标准-->
+                                <div class="standard">
+                                    <ul>
+                                        <li>
+                                            <img src="http://yweb0.cnliveimg.com/sites/eswc/170810151858591_801.jpg" />
+                                            <p>具有好的审美趣味和审美价值。文化创意设计要体现国际和国内的流行时尚特色。健康向上，文化内涵丰富，突出文化创意与相关产业的有机融合。</p>
+                                        </li>
+                                        <li>
+                                            <img src="http://yweb1.cnliveimg.com/sites/eswc/170810151858599_982.jpg" />
+                                            <p>大多数作品都要具有可生产性。要有较好的实用功能和良好的用户体验。</p>
+                                        </li>
+                                        <li>
+                                            <img src="http://yweb2.cnliveimg.com/sites/eswc/170810151858600_121.jpg" />
+                                            <p>具备良好的市场潜质和开拓市场的能力。符合新时代消费者的需求，有较强产业发展能力和实现交易的潜力；性能稳定，技术先进，功能合理，能满足使用、维护及安全方面的要求。</p>
+                                        </li>
+                                        <li>
+                                            <img src="http://yweb3.cnliveimg.com/sites/eswc/170810151858631_810.jpg" />
+                                            <p>均为原创作品。结合大赛分类主题特色进行创新，具备新颖的构思和概念，充分考虑新科技、新材料、新工艺的应用，同时强调绿色与环保的理念。设计理念超前，独特新颖，有创新点、有震撼力。充分体现创作者的想象力和创造力，拥有完整的自主知识产权。</p>
+                                        </li>
+                                        <li>
+                                            <img src="http://yweb0.cnliveimg.com/sites/eswc/170810151858653_234.jpg" />
+                                            <p>报送的作品，无论从设计到生产，还是实物产品。要能够充分体现作品的品质。能够通过相关机构认定标准要求，性能安全；质量高，制作精湛，传统技艺应用到位，商品、包装系统完整。</p>
+                                        </li>
+                                        <li>
+                                            <img src="http://yweb1.cnliveimg.com/sites/eswc/170810151858681_704.jpg" />
+                                            <p>注重系统与系统、系统与人的和谐发展。能够充分体现环保的理念，符合可持续发展要求。在设计、制造、流通、使用、回收全过程注重节能、环保、低碳健康的理念。</p>
+                                        </li>
+                                        <li>
+                                            <img src="http://yweb2.cnliveimg.com/sites/eswc/170810151858685_395.jpg" />
+                                            <p>示范和标杆意义。追求价值优先，有较强的系列化延伸性，有与其它产业融合发展的能力，同时关注该作品涉及的市场可行性。</p>
+                                        </li>
+                                    </ul>
+                                    <div class="clear"></div>
+                                </div>
+                            </li>
+                            <li class="hide">
+                                <h3>一、当遇到以下情况时，大赛组委会有权收回奖杯、证书、奖金、标志使用权等</h3>
+                                <p>（1）正式确认获奖作品侵犯了其他作品的知识产权。</p>
+                                <p class="mb-20">（2）设计者在未通知主办方的情况下对获奖作品进行重大修改，并继续在该作品上使用获奖标志或利用其进行宣传。</p>
+                                <h3>二、参赛者必须保证在各方面均没有违反或侵犯他人的知识产权</h3>
+                                <p class="mb-20">包括商标、专利、版权、反不正当竞争、货源标记、商号、集成电路、多媒体、数据库、技术秘密、生物技术等各方面，参赛者须严格遵守大赛处理侵权投诉的程序。</p>
+                                <h3>三、大赛组委会对参赛者提交的相关信息进行严密的管理</h3>
+                                <p class="mb-20">大赛组委会有权使用参赛者的信息进行与评奖活动有关的宣传活动，例如发布获奖作品信息、展览展示、出版刊物等。</p>
+                                <h3>四、本活动最终解释权归大赛组委会</h3>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!--立即报名-->
+            <div class="ljbm hide">
+                <div class="set-width">
+
+                    <div class="ljbm-bottom">
+                        <!--登录-->
+                        <div class="login">
+                            <div class="title">
+                                <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191205101214459_174.png" />
+                            </div>
+                            <div class="login-content">
+                                <form action="//localhost:8081/api/loginValidate" method="post" autocomplete="off" id="loginMsg">
+                                    <div class="prompt enter hide">用户名不能为空！</div>
+                                    <div class="form-group name">
+                                        <span><img src="http://yweb2.cnliveimg.com/sites/eswc/170815112002741_067.png" /></span>
+                                        <input type="text" name="userName" id="loginUserName" placeholder="手机号"  value=""/>
+                                        <!--<input type="text" name="userName" id="loginUserName" placeholder="手机号"  value="${cookie.username.value}"/>-->
+                                        <input type="text" name="type" class="hide" value="0" />
+                                    </div>
+                                    <!--密码登录-->
+                                    <div class="form-group password">
+                                        <span><img src="http://yweb1.cnliveimg.com/sites/eswc/170815112002735_293.png" /></span>
+                                        <input type="password" name="userPwd" id="loginPwd" placeholder="请输入密码" />
+                                    </div>
+                                    <!--短信登录-->
+                                    <div class="form-group phone-message hide">
+                                        <div class="phone-message-border">
+                                            <span><img src="http://yweb1.cnliveimg.com/sites/eswc/170815112002735_293.png" /></span>
+                                            <input type="text" name="vCode" id="loginVcode" class="verification" placeholder="验证码" />
+                                        </div>
+                                        <div id="loginMsgVcode" class="get-verification" onclick="getLoginMsg();">获取短信验证码</div>
+                                        <div id="loginDate" class="get-verification hide"></div>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="full-left"><input type="checkbox" checked="checked" id="remember"/> 记住我</span>
+                                        <span class="full-right"><a href="javascript:void(0);" id="wjmm">忘记密码？</a></span>
+                                        <div class="clear"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="submit" onclick="loginMsg();" id="onload">登      录</button>
+                                        <button type="button" class="submit hide" id="loading">登录中......<img src="http://yweb0.cnliveimg.com/sites/eswc/170818113906996_061.gif" style="width: 20px;"></button>
+                                    </div>
+                                    <div class="form-group">
+                                        <span class="full-left">还没有账号？ <a href="javascript:void(0);" class="f5b638" id="ljzc">立即注册</a></span>
+                                        <span class="full-right">
+                                 <a href="javascript:void(0);" id="dxdl">短信快捷登录</a>
+                                 <a href="javascript:void(0);" id="zhdl" class="hide">账号登录</a>
+                             </span>
+
+                                        <div class="clear"></div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                        <!--注册-->
+                        <div class="register hide">
+                            <div class="title">
+                                <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191205101214459_174.png" />
+                                <span>已注册，<a href="javascript:void(0);" class="f5b638" id="dl">登录</a></span>
+                            </div>
+                            <div class="register-content">
+                                <form  action="//hicc.cnlive.com/cnlive_oicc/api/registValidate" method="post" autocomplete="off" id="zhuce">
+                                    <div class="prompt zhuce hide">用户名不能为空！</div>
+                                    <div class="form-group">
+                                        <span><span class="red">*</span>用户名</span>
+                                        <input type="text" name="nickname" id="zhuceUserName" placeholder="请填写真实姓名" />
+                                        <input type="text" name="frmId" value="oicc" class="hide"/>
+                                    </div>
+                                    <div class="form-group">
+                                        <span><span class="red">*</span>密码</span>
+                                        <input type="password" name="userPwd" id="zhucePwd" placeholder="6—12位字母或数字，区分大小写" />
+                                    </div>
+                                    <div class="form-group">
+                                        <span><span class="red">*</span>手机号</span>
+                                        <input type="text" name="mobile" id="mobile" placeholder="手机号" />
+                                    </div>
+                                    <div class="form-group">
+                                        <span><span class="red">*</span>验证码</span>
+                                        <input type="text" name="vCode" id="zhuceVcode" class="verification" placeholder="验证码" />
+                                        <div id="msg" class="get-verification" onclick="getMsg();">获取短信验证码</div>
+                                        <div id="msgDate" class="get-verification hide"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <p><input type="checkbox" checked="checked" id="xieyi" /> 我已阅读并同意<a href="//hicc.cnlive.com/agreement.html" target="_blank" class="f5b638">《用户注册协议》</a></p>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="submit" onclick="zhuce();">立即注册</button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                        <!--找回密码-->
+                        <div class="retrievalpass hide">
+                            <div class="title">
+                                <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191205101214459_174.png" />
+                                <span><a href="javascript:void(0);" class="f5b638" id="dll" style="position: relative; top: -36px;right: -100px;font-size: 14px;">登录</a></span>
+                            </div>
+                            <div class="retrievalpass-content">
+                                <form action="//hicc.cnlive.com/cnlive_oicc/api/resetPwd" method="post" autocomplete="off" id="zhaohui">
+                                    <div class="prompt pwd hide" style="text-align: center;">用户名不能为空！</div>
+                                    <div class="form-group">
+                                        <span>用户名</span>
+                                        <input type="text" name="mobile" id="pwdMobile" placeholder="请输入注册时填写的手机号码" />
+                                    </div>
+                                    <div class="form-group">
+                                        <span>验证码</span>
+                                        <input type="text" name="vCode" id="pwdVcode" class="verification" placeholder="验证码" />
+                                        <div class="get-verification" id="pwdMsg" onclick="pwdMsg();">获取短信验证码</div>
+                                        <div class="get-verification hide" id="pwdMsgDate"></div>
+                                    </div>
+                                    <div class="form-group">
+                                        <span>输入新密码</span>
+                                        <input type="password" name="userPwd" id="newPwd" placeholder="6—12位字母或数字，区分大小写" />
+                                    </div>
+                                    <div class="form-group">
+                                        <span>再次输入新密码</span>
+                                        <input type="password" name="userPwd1" id="newPwd1" placeholder="6—12位字母或数字，区分大小写" />
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="submit"  onclick="zhaohui();">提    交</button>
+                                    </div>
+
+                                </form>
+                            </div>
+                        </div>
+                        <!--找回密码成功-->
+                        <div class="retrievalpasscg hide" id="pwdsuccess">
+                            <div class="title">
+                                <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191205101214459_174.png" />
+                                <a href="javascript:showLogin();">X</a>
+                            </div>
+                            <div class="retrievalpasscg-content">
+                                <h2><span>√</span><i>密码修改成功</i></h2>
+                            </div>
+                        </div>
+                        <!--注册成功-->
+                        <div class="retrievalpasscg hide" id="usersuccess">
+                            <div class="title">
+                                <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191205101214459_174.png" />
+                                <a href="javascript:showLogin();">X</a>
+                            </div>
+                            <div class="retrievalpasscg-content">
+                                <h2><span>√</span><i>注册成功</i></h2>
+                            </div>
+                        </div>
+                        <!--已登录-->
+                        <div class="retrievalpasscg loginMsg hide">
+                            <div class="title">
+                                <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191205101214459_174.png" />
+                                <a href="javascript:showUpload();">X</a>
+                            </div>
+                            <div class="retrievalpasscg-content">
+                                <h2>
+                                    <span>√</span>
+                                    <i>您已报名成功，如未上传，请尽快<a href="javascript:showUpload();" style="color: #f5b655;border-bottom: 1px solid #f5b655;font-family: serif;">上传作品</a></i>
+                                </h2>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+            <!--作品上传-->
+            <div class="zpsc hide">
+                <div class="set-width">
+                    <div class="upload-content">
+                        <c:choose>
+                            <c:when test="${isMoblie}">
+                                <div  style="padding: 30px 30px;font-size: 43px; color: red;">
+                                    <div style="text-align: center;margin-top: -45px;" id="upfile">请在电脑端上传作品</div>
+                                </div>
+                            </c:when>
+                            <c:otherwise>
+                                <form action="//hicc.cnlive.com/cnlive_oicc/uploadFile/0" method="post" autocomplete="off"  id="upfile">
+                                    <div class="prompt fileUpMsg hide" style="margin-left: 28px; margin-bottom: 15px;"></div>
+                                    <div class="form-group">
+                                        <span><span class="red">*</span>选择组别</span>
+                                        <select name="group" id="group">
+                                            <option value="1">传达领域</option>
+                                            <option value="2">商贸领域</option>
+                                            <option value="3">应用领域</option>
+                                            <option disabled="disabled" value="4" style="color: #565454;">数学与科学领域</option>
+                                            <option value="5">物质领域</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <span><span class="red">*</span>作品名称</span>
+                                        <input type="text" name="title" id="fileTitle" class="workname" />
+                                        <!--<input type="text" name="fileName" id="fileName" class="hide" />-->
+                                    </div>
+                                </form>
+                                <form>
+                                    <div class="form-group"  id="container">
+                                        <span><span class="red">*</span>作品选择</span>
+                                        <input type="file" id="pickfiles" class="pic-upload" multiple="multiple"/>
+                                        <i class="file-i">选择附件</i>
+                                    </div>
+
+                                    <div class="form-group hide" id="progressForm">
+                                        <span>上传进度</span>
+                                        <div class="progress">
+                                            <div class="progress-bar" id="progressShow" style="width: 0%;">
+                                                <span class="sr-only" id="progress">0%</span>
+                                            </div>
+                                        </div>
+                                        <div class="form-group hide" id="progressForm1" style="text-align: center;">
+                                            <div>
+                                                <span class="red" >文件上传中，请勿离开或刷新页面</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <p>上传要求<span> 1、作品图片（不低于300dpi.jpg，最多10张）</span></p>
+                                        <p style="text-indent: 2em;"><span> 2、作品视频</span></p>
+                                        <p style="text-indent: 2em;"><span> 3、设计说明（400字以内） </span></p>
+                                        <p style="text-indent: 2em;"><span class="red"> * 以上文件请以压缩包(tar、zip格式)的形式上传</span></p>							<p style="text-indent: 2em;"><span class="red"> * 每个账号只能上传一次，如有多份作品，请放到同一个压缩包内</span></p>
+                                    </div>
+                                    <div class="form-group">
+                                        <button type="button" class="submit" onclick="upfile();" id="save">上    传</button>
+                                        <button type="button" class="submit hide" id="saving">上传中...</button>
+                                    </div>
+                                </form>
+                            </c:otherwise>
+                        </c:choose>
+                    </div>
+                    <div class="upload-content-msg hide" style="padding: 105px 100px;font-size: 20px; color: red;">
+                        <div style="text-align: center;">请先<a href="javaScript:baoming();" style="color: red;border-bottom: 1px solid red;font-family: serif;">登录</a>再选择上传作品</div>
+                    </div>
+
+                    <div class="uploadfile-msg hide">
+                        <div>
+                            <img src="http://yweb3.cnliveimg.com/sites/eswc/170817184939053_757.png" />
+                            <h3>作品上传成功</h3>
+                        </div>
+                        <p><span class="f5b638">作品标题：</span><b id="uploadfile-title">ceshi</b></p>
+                        <p><span class="f5b638">所属领域：</span><b id="uploadfile-group">传达领域</b>
+                        <p><span class="f5b638">作品下载：</span><a href="#" id="file_down">点击下载</a>
+                    </div>
+
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+</div>
+<!--文创作品展-->
+<div class="exhibition" id="zuopin">
+    <div class="set-width">
+        <div class="title">
+            <img src="http://yweb1.cnliveimg.com/sites/eswc/170812110114684_531.png" />
+        </div>
+        <div class="exhibition-content">
+            <div class="exhibition-desc">
+                <p>大赛优秀作品参加本届大会设立的“‘一带一路’文化创意设计作品展”。 除中国外,大会将邀请“一带一路”沿线国家最优秀的名师和文化创意设计团队携作品参展。</p>
+                <p>大会采取官网线上长期展示及线下展会两种方式,线下展出揭幕时间为2020年6月5日下午,展期一年，展厅地点在和林格尔新区装备产业园。 </p>
+                <p>所有优秀文创设计作品将被选定进入和林格尔新区国际文化创意IP库,由和林格尔新区文化创意园出资并进行孵化。
+                </p>
+            </div>
+            <!--作品列表-->
+            <cms:container name="usercontainer10" width="900" maxElements="10" type="maincontent"></cms:container>
+            <!--<a href="/list.html" target="_blank" class="more">更多详情  》</a>-->
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+
+<!--关于我们-->
+<div class="about" id="about">
+    <div class="set-width">
+        <div class="title">
+            <img src="http://yweb0.cnliveimg.com/sites/eswc/170812114243631_272.png" />
+        </div>
+        <div class="about-content">
+            <ul>
+                <li>
+                    <h3>大会组委会秘书处（和林格尔新区）</h3>
+                    <p>地址：内蒙古自治区呼和浩特市盛乐经济园区企业总部大楼</p>
+                    <p>邮编：011505 </p>
+                    <p>电话：0471-7388191 </p>
+                    <p>邮箱：Hiccxq@163.com </p>
+                    <p>联系人：杨军龙 18804716626</p>
+                    <p style="text-indent: 4em;">刘<span style="text-indent: 1em;display: inline-block;">暄</span> 15047818399</p>
+                </li>
+                <li>
+                    <h3>大会组委会秘书处（北京）</h3>
+                    <p>地址：中国北京市海淀区西三环北路89号<br /><span style="text-indent: 3em;display: inline-block;">中国外文大厦A座10层</span></p>
+                    <p>邮编：100089</p>
+                    <p>电话：8882 0258</p>
+                    <p>邮箱：hicc@cnlive.com</p>
+                    <p>联系人：迟舒文</p>
+                </li>
+            </ul>
+            <div class="clear"></div>
+        </div>
+    </div>
+</div>
+<!--底部-->
+<div class="footer">
+    <div class="set-width">
+        <div class="foot-logo">
+            <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191204150118276_260.png" />
+        </div>
+
+        <div class="cbdw">
+            <div style="width: 250px;">
+                <h3>展览时间：</h3>
+                <p>2020年6月5日起</p>
+                <h3>展览地址：</h3>
+                <p>和林格尔新区装备产业园</p>
+                <h3>联系电话：</h3>
+                <p>0471-7388191</p>
+            </div>
+            <div style="width:250px">
+                <h3>主办单位：</h3>
+                <p>内蒙古和林格尔新区</p>
+                <p>中国互联网新闻中心</p>
+            </div>
+            <div style="width: 310px;">
+                <h3>承办单位：</h3>
+                <p>北京九州一方文化创意院</p>
+                <p>北京中国网传媒有限公司</p>
+            </div>
+            <div style="width: 270px;">
+                <h3>媒体支持：</h3>
+                <p>中国网、人民网、新华网、<br />央视网、央广网、光明网、<br />中新网、央视频、咪咕视频等</p>
+
+            </div>
+            <div class="clear"></div>
+        </div>
+
+
+        <div class="wzmess">
+            <p>网站技术支持：<a style="color: #fff;" href="http://www.cnlive.com">北京中国网传媒有限公司</a></p>
+            <p>电话：137 1797 5725 （24h）</p>
+        </div>
+        <div class="clear"></div>
+    </div>
+</div>
+<div class="fix-right">
+    <a href="javascript:void(0)" class="fix-bm">敕勒川<br />文创奖<br />报名 》</a>
+    <!-- <a href="/jscyjnh.html">COS<br />RUN<br />  报名 》</a>-->
+    <a href="javascript:void(0)" class="fix-chbm">  <br />参会报名 》</a>
+    <a href="javascript:goTop();" style="padding: 0;display: none;" class="goTop">
+        <img src="http://oicc.ys1.cnliveimg.com/sites/eswc/191204100119179_023.png" />
+    </a>
+</div>
+
+<script type="text/javascript" src="//yweb3.cnliveimg.com/js/page_stadig.min.js"></script>
+<script type="text/javascript">
+    //作品列表
+    var swiper = new Swiper('.exhibition-content-list .swiper-container', {
+        pagination: false,
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        slidesPerView: 4,  //屏幕能见图片个数
+        centeredSlides: false,
+        paginationClickable: true,
+        spaceBetween: 16,
+        autoplay: 2000,
+        loop: true,
+        slidesPerGroup : 4,  //滚动的图片个数
+        speed:1000,
+    });
+
+    var swiper = new Swiper('.meeting-swiper .swiper-container', {
+        pagination: false,
+        nextButton: '.swiper-button-next',
+        prevButton: '.swiper-button-prev',
+        slidesPerView: 2,  //屏幕能见图片个数
+        centeredSlides: false,
+        paginationClickable: true,
+        spaceBetween: 30,
+        autoplay: 2000,
+        loop: true,
+        slidesPerGroup : 2,  //滚动的图片个数
+        speed:1000,
+
+    });
+
+
+    //banner轮播
+    var swiper = new Swiper('.banner-video .swiper-container', {
+        paginationClickable: true,
+        parallax: true,
+        centeredSlides: true,
+        autoplay: 4000,//可选选项，自动滑动
+        loop: true,
+        autoplayDisableOnInteraction: false
+    });
+
+    $(document).ready(function(){
+        //北斗奖
+        $(".award-menu li").click(function(){
+            $(this).each(function(){
+                $(".award-menu li a").removeClass("active");
+                $(this).children("a").addClass("active");
+                $(".award-top-content > div").addClass("hide");
+                $(".award-top-content > div").eq($(this).index()).removeClass("hide");
+                if($(this).index()==4){
+                    if(isLogin){
+                        $(".ljbm-bottom >div").addClass("hide");
+                        $(".loginMsg").removeClass("hide");
+                    }else{
+                        $(".ljbm-bottom >div").addClass("hide");
+                        $(".login").removeClass("hide");
+                    }
+                }
+                if($(this).index()==5){
+                    if(isLogin){
+                        if(haveProduct){
+                            $(".upload-content-msg").addClass("hide");
+                            $(".upload-content").addClass("hide");
+                            $(".uploadfile-msg").removeClass("hide");
+
+                        }else{
+                            $(".upload-content-msg").addClass("hide");
+                            $(".uploadfile-msg").addClass("hide");
+                            $(".upload-content").removeClass("hide");
+                        }
+
+                    }else{
+                        $(".upload-content").addClass("hide");
+                        $(".uploadfile-msg").addClass("hide");
+                        $(".upload-content-msg").removeClass("hide");
+                    }
+                }
+            });
+        });
+
+        //参赛须知
+        $(".notice .notice-title li").hover(function(){
+            $(this).each(function(){
+                $(".notice .notice-title-desc > li").addClass("hide");
+                $(".notice .notice-title-desc > li").eq($(this).index()).removeClass("hide");
+            });
+        });
+
+        //图片轮播内容切换
+        $("#jswbox ul li").click(function(){
+            $(this).each(function(){
+                $("#jswbox-desc ul li").addClass("hide");
+                $("#jswbox-desc ul li").eq($(this).attr("li-id")).removeClass("hide");
+                $("#jswbox ul li img").attr("src",$(this).children("img"));
+                data_src=$(this).children("img").attr("data-src");
+                $(this).children("img").attr("src",data_src);
+            });
+        });
+        setInterval(function() {
+            li_id=$("#jswbox ul li").eq(2).attr("li-id");
+            $("#jswbox-desc ul li").addClass("hide");
+            $("#jswbox-desc ul li").eq(li_id).removeClass("hide");
+            $("#jswbox ul li").eq(0).children("img").attr("src",$("#jswbox ul li").eq(0).children("img").attr("yy-src"));
+            $("#jswbox ul li").eq(1).children("img").attr("src",$("#jswbox ul li").eq(1).children("img").attr("yy-src"));
+            $("#jswbox ul li").eq(3).children("img").attr("src",$("#jswbox ul li").eq(3).children("img").attr("yy-src"));
+            $("#jswbox ul li").eq(4).children("img").attr("src",$("#jswbox ul li").eq(4).children("img").attr("yy-src"));
+            data_src=$("#jswbox ul li").eq(2).children("img").attr("data-src");
+            $("#jswbox ul li").eq(2).children("img").attr("src",data_src);
+        }, 1);
+
+        //点击忘记密码
+        $("#wjmm").click(function(){
+            $(".ljbm-bottom > div").addClass("hide");
+            $(".retrievalpass").removeClass("hide");
+        });
+        //点击立即注册
+        $("#ljzc").click(function(){
+            $(".ljbm-bottom > div").addClass("hide");
+            $(".register").removeClass("hide");
+        });
+        //点击登录
+        $("#dl,#dll").click(function(){
+            $(".ljbm-bottom > div").addClass("hide");
+            $(".login").removeClass("hide");
+        });
+        //短信快捷登录
+        $("#dxdl").click(function(){
+            isLoginPwd=false;
+            $("#loginPwd").val("");
+            $(".password").addClass("hide");
+            $("#dxdl").addClass("hide");
+            $(".phone-message").removeClass("hide");
+            $("#zhdl").removeClass("hide");
+
+        });
+        //账号登录
+        $("#zhdl").click(function(){
+            isLoginPwd=true;
+            $("#loginVcode").val("");
+            $(".phone-message").addClass("hide");
+            $("#zhdl").addClass("hide");
+            $(".password").removeClass("hide");
+            $("#dxdl").removeClass("hide");
+        });
+        //顶部登录，右边固定位登录
+        $(".fix-bm,#onlogin,#banner-ljbm").click(function(){
+            $("html,body").animate({scrollTop:2900},1000);
+            $(".award-menu li").eq(4).children("a").click();
+        });
+
+        //参会报名
+        $(".fix-chbm").click(function(){
+            $("html,body").animate({scrollTop:1200},1000);
+            //$(".award-menu li").eq(5).children("a").click();
+        });
+
+        //作品上传
+        $(".file-i").click(function(){
+            $(".prompt.fileUpMsg").addClass("hide");
+            $(".pic-upload").click();
+        });
+
+    });
+
+    //从外部点击顶部 登录	从参数判断 转到立即报名 的位置
+    function GetQueryString(name){
+        var reg = new RegExp("(^|&)"+ name +"=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if(r!=null)return  unescape(r[2]); return null;
+    }
+    $(function(){
+        if(GetQueryString("l") == "login"){
+            $("html,body").animate({scrollTop:2900},1000);
+            $(".award-menu li").eq(4).children("a").click();
+        }
+    })
+    //回到顶部函数
+    $(function(){
+        $(window).scroll(function() {
+            if($(window).scrollTop() >= 300){
+                $('.goTop').fadeIn(300);
+            }else{
+                $('.goTop').fadeOut(300);
+            }
+        });
+    });
+    function goTop(){
+        $('html,body').animate({'scrollTop':0},500);
+    }
+
+</script>
+
+</body>
+</html>
