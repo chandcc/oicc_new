@@ -32,6 +32,8 @@ public class ProductionController {
     ProductionService productionService;
     @Autowired
     MemberService memberService;
+
+
     @RequestMapping("/index/{pageNo}/{type}")
     public String index(Model Model,HttpServletRequest request, HttpServletResponse response, String mobile, String group_id, @PathVariable int pageNo, @PathVariable String type) {
         HashMap<String, String> userMap = new HashMap<String, String>();

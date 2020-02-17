@@ -42,7 +42,7 @@ public class CanHuiController   {
 	/**
 	 * 参会报名申请
 	 */
-	@RequestMapping("apply")
+	@RequestMapping("/apply")
 	public ResultBean apply(HttpServletRequest request, HttpServletResponse response, String mobile, String email, String userName){
 		if(StringUtils.isEmpty(mobile)){
 			logger.info("参会报名，手机号为空");

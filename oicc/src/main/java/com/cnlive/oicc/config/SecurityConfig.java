@@ -26,23 +26,21 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
 
     //配置忽略拦截的资源,主要是一些静态页面资源和构成页面所必要的js文件
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/css/**","/assets/**","/data/**","/fcds/**","/js/**");
-    }
-
-
+//    @Override
+//    public void configure(WebSecurity web) throws Exception {
+//        web.ignoring().antMatchers("/css/**");
+//    }
     //配置访问控制
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //  允许所有用户访问"/"和"/index.html"
         http.authorizeRequests()
-                .antMatchers("/", "/api/login").permitAll()
+                .antMatchers( "/assets/**","/data/**","/fcds/**","/js/**","/api/login").permitAll()
                 .anyRequest().authenticated()   // 其他地址的访问均需验证权限
                 .and()
                 .formLogin()
                 .loginPage("/api/login")
-                .successHandler(myAuthenticationSuccessHandler) //  登录页
+//                .successHandler(myAuthenticationSuccessHandler) //  登录页
                 .failureUrl("/api/500").permitAll() //登录失败页面
                 .and()
                 .logout()

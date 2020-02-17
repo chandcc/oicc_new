@@ -22,7 +22,6 @@ import java.util.List;
 public class MyUserDetailsServiceImpl implements MyUserDetailsService {
     private final UserService userService;
     private PermissionService permissionService;
-    private MyRequest myRequest;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 

@@ -4,7 +4,7 @@ import com.cnlive.oicc.entity.TUser;
 
 public interface UserService {
     /**
-     * 获取用户信息 更具名称
+     * 根据用户名获取用户信息
      */
     TUser getUserByName(String username);
 }
