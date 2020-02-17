@@ -54,15 +54,15 @@ public class UserController {
     @ResponseBody
     public Map tologin(Model model,HttpServletRequest request, HttpServletResponse response, String username, String password) {
         Map<String, Object> result = new HashMap<String, Object>();
-        if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password)) {
-            result = userService.checkUser(username, MD5.sign(password));
-            if (Integer.parseInt(String.valueOf(result.get("code"))) == 0) {
-                TUser user = userService.getUser(username);
-                request.getSession().setAttribute("userSession",user);
-                result.put("role", user.getRole());
-            }
-
-        }
+//        if (!StringUtils.isEmpty(username) && !StringUtils.isEmpty(password)) {
+//            result = userService.checkUser(username, MD5.sign(password));
+//            if (Integer.parseInt(String.valueOf(result.get("code"))) == 0) {
+//                TUser user = userService.getUser(username);
+//                request.getSession().setAttribute("userSession",user);
+//                result.put("role", user.getRole());
+//            }
+//
+//        }
         return result;
     }
 

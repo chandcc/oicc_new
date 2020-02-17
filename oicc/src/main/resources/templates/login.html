@@ -87,11 +87,11 @@
             },
             function (data) {
                 if (data.code == 0) {
-                    if (data.role == "admin" || data.role == "oiccadmin") {
+                    if (data.role == "admin" || data.role == "managers") {
                         location.href = "/production/index/1/0";
-                    } else if (data.role == "ipadmin") {
+                    } else if (data.role == "managers") {
                         location.href = "/production/1/1";
-                    } else if (data.role == "jsadmin") {
+                    } else if (data.role == "managers") {
                         location.href = "/enrol/getEnrol/1";
                     }
                 } else if (data.code == 1) {
@@ -102,7 +102,6 @@
                     jQuery('#warning-alert .modal-body').html(data.msg);
                 }
             }, 'json');
-
     });
 </script>
 
@@ -110,6 +109,5 @@
 <script src="/assets/plugins/sparkline-chart/jquery.sparkline.min.js" type="text/javascript"></script>
 <script src="/assets/js/chart-sparkline.js" type="text/javascript"></script>
 <!-- Sidebar Graph - END -->
-
 
 </html>
