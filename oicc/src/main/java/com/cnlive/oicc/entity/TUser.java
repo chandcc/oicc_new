@@ -7,6 +7,7 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.io.Serializable;
 import java.sql.Timestamp;
+import java.util.List;
 
 /**
 *
@@ -80,6 +81,10 @@ public class TUser implements Serializable {
     * isNullAble:1
     */
     private String tel;
+    /**
+     * 角色列表
+     */
+    private List<TRole> roles;
 
 
 

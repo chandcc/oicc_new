@@ -16,6 +16,8 @@ public interface TUserMapper extends Mapper<TUser> {
     @Select("select * from t_user order by create_time desc")
      List<TUser> paginate();
 
+    @Select("select * from t_user where name=#{username}")
+    TUser getUserByName(String username);
 
 
 }

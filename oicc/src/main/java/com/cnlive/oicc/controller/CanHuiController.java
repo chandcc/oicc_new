@@ -17,12 +17,12 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 参会报名
  *
- *
  */
 @Controller
 @RequestMapping("/canhui")
 public class CanHuiController   {
 	private Logger logger = Logger.getLogger(CanHuiController.class);
+
 	@Autowired
 	CanHuiService canHuiService;
 	

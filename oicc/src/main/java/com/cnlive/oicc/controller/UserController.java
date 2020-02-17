@@ -7,6 +7,7 @@ import com.cnlive.oicc.entity.TUser;
 import com.cnlive.oicc.service.MemberService;
 import com.cnlive.oicc.service.ProductionService;
 import com.cnlive.oicc.service.UserService;
+import com.cnlive.oicc.service.impl.UserServiceImpl;
 import com.cnlive.oicc.utils.CommonUtils;
 import com.cnlive.oicc.utils.Constants;
 import com.cnlive.oicc.utils.MD5;
@@ -33,7 +34,7 @@ import java.util.Map;
 @RequestMapping("/user")
 public class UserController {
     @Autowired
-    UserService userService;
+    UserServiceImpl userService;
     @Autowired
     MemberService memberService;
     @Autowired
