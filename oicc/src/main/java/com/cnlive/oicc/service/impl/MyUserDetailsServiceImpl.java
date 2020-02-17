@@ -5,6 +5,7 @@ import com.cnlive.oicc.entity.TUser;
 import com.cnlive.oicc.service.MyUserDetailsService;
 import com.cnlive.oicc.service.PermissionService;
 import com.cnlive.oicc.service.UserService;
+import com.cnlive.oicc.utils.MyRequest;
 import lombok.AllArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
@@ -21,7 +22,7 @@ import java.util.List;
 public class MyUserDetailsServiceImpl implements MyUserDetailsService {
     private final UserService userService;
     private PermissionService permissionService;
-
+    private MyRequest myRequest;
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 
@@ -38,6 +39,8 @@ public class MyUserDetailsServiceImpl implements MyUserDetailsService {
                 authorities.add(new SimpleGrantedAuthority(permission.getPermissionCode()));
             }
         }
+
         return new User(user.getName(),user.getPassword(),authorities);
     }
+
 }

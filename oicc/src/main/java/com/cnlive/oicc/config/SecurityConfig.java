@@ -1,6 +1,7 @@
 package com.cnlive.oicc.config;
 
 import com.cnlive.oicc.service.MyUserDetailsService;
+import com.cnlive.oicc.service.impl.MyAuthenticationSuccessHandler;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -21,12 +22,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MyUserDetailsService myUserDetailsService;
 
+    @Autowired
+    MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
 
     //配置忽略拦截的资源,主要是一些静态页面资源和构成页面所必要的js文件
     @Override
     public void configure(WebSecurity web) throws Exception {
         web.ignoring().antMatchers("/css/**","/assets/**","/data/**","/fcds/**","/js/**");
     }
+
 
     //配置访问控制
     @Override
@@ -37,13 +41,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()   // 其他地址的访问均需验证权限
                 .and()
                 .formLogin()
-                .loginPage("/api/login")   //  登录页
+                .loginPage("/api/login")
+                .successHandler(myAuthenticationSuccessHandler) //  登录页
                 .failureUrl("/api/500").permitAll() //登录失败页面
                 .and()
                 .logout()
                 .logoutSuccessUrl("/api/login");
     }
-
     //配置密码校验
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {

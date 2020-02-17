@@ -15,11 +15,11 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * 参会报名
  *
- *
  */
 @Controller
 public class CanHuiController   {
 	private Logger logger = Logger.getLogger(CanHuiController.class);
+
 	@Autowired
 	CanHuiService canHuiService;
 	

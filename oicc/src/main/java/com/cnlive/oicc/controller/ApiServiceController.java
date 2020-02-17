@@ -33,7 +33,6 @@ import java.util.Map;
 /**
  * API接口 api
  */
-
 @Controller
 @RequestMapping("/api")
 public class ApiServiceController {
@@ -55,7 +54,6 @@ public class ApiServiceController {
         return "login";
     }
 
-
     /**
      * 统一异常处理页面
      */
@@ -63,7 +61,6 @@ public class ApiServiceController {
     public String error() {
         return "common/500";
     }
-
     /**
      * 登录
      */
