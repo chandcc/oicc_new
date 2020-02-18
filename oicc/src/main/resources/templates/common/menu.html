@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:security="http://www.springframework.org/security/tag">
 <!-- MAIN MENU - START -->
 <div class="page-sidebar-wrapper" id="main-menu-wrapper">
     <div class="profile-info row">
@@ -11,7 +11,9 @@
         </div>
         <div class="profile-details col-md-8 col-sm-8 col-xs-8">
             <h3>
-                <a href="javaScript:void(0);" th:if="${session != null}" th:text="${session.userSession.name != null?session.userSession.name:'未登录'}">userSession.name</a>
+                <a>
+                    <security:authentication property="principal.username"/>
+                </a>
                 <span class="profile-status online"></span>
             </h3>
             <p class="profile-title"></p>
@@ -19,7 +21,7 @@
     </div>
     <!-- USER INFO - END -->
     <ul class='wraplist' id="usertablist">
-			<span th:if="${session.userSession.role eq 'oiccadmin'}">
+			<span>
 			<li class=""><a href="#"> <i class="fa fa-suitcase"></i> <span
                     class="title">文创北斗奖</span> <span class="arrow "></span>
 			</a>
@@ -34,7 +36,7 @@
 			</a></li>
 				</ul></li>
 			</span>
-        <span th:if="${session.userSession.role eq 'ipadmin'}">
+        <span>
 			<li class=""><a href="#"> <i class="fa fa-suitcase"></i> <span
                     class="title">原创IP</span> <span class="arrow "></span>
 			</a>
@@ -49,7 +51,7 @@
 			</a></li>
 				</ul></li>
 		</span>
-        <span th:if="${session.userSession.role eq 'jsadmin'}">
+        <span>
             <li class=""><a href="#"> <i class="fa fa-suitcase"></i> <span
                     class="title">角色创意</span> <span class="arrow "></span>
             </a>
@@ -66,7 +68,7 @@
             </li>
         </span>
 
-        <span th:if="${session.userSession.role eq 'admin'}">
+        <span>
                         <li class=""><a href="#"> <i class="fa fa-suitcase"></i> <span
                                 class="title">文创北斗奖</span> <span class="arrow "></span>
             </a>

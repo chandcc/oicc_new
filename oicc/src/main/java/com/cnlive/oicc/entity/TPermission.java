@@ -18,5 +18,7 @@ public class TPermission {
     private String permissionName;
     private String permissionCode;
     private String type;
+    private String url;
     private int pid;
+
 }

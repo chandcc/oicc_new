@@ -16,7 +16,7 @@ public class PermissionServiceImpl implements PermissionService {
 
 
     @Override
-    public List<TPermission> getPermissionsByRoleCode(String rolecode) {
+    public List<TPermission> getPermissionsByRoleCode(int rolecode) {
         return permissionMapper.getPermissionsByRoleCode(rolecode);
     }
 }

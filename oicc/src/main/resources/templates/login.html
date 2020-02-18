@@ -79,7 +79,7 @@
 <script type="text/javascript">
     $("#loginform").validate();
     $('#wp-submit').click(function () {
-        $.post('/user/tologin',
+        $.post('/api/login',
             {
                 username: $("#user_login").val(),
                 password: $("#user_pass").val()

@@ -15,14 +15,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@AllArgsConstructor
 @Service
+@AllArgsConstructor
 @Transactional(rollbackFor = Exception.class)
 public class UserServiceImpl implements UserService {
     private final TUserMapper tUserMapper;
-
-
-
     /**
      * 按照操作人的条件倒序时间查询
      *

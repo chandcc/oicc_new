@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:security="http://www.springframework.org/security/tag">
     <!-- TOPBAR - START -->
                 <div class='quick-area'>
                 <div class='pull-left'>
@@ -16,7 +16,11 @@
                         <li class="profile">
                             <a href="#" data-toggle="dropdown" class="toggle">
                                 <img src="../../../data/profile/profile.png" alt="user-image" class="img-circle img-inline">
-                                <span  th:text="${session.userSession.name}"> userSession<i class="fa fa-angle-down"></i></span>
+                                <span>
+                                    <security:authentication property="principal.username"/>
+                                    <i class="fa fa-angle-down"></i>
+
+                                </span>
                             </a>
                             <ul class="dropdown-menu profile animated fadeIn">
                                 <li>

@@ -54,7 +54,7 @@ public class ApiServiceController {
         return "api/index";
     }
 
-    @GetMapping("/login")
+    @RequestMapping("/login")
     public String login() {
         return "login";
     }

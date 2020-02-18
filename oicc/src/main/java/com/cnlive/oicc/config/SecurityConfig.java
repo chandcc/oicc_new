@@ -12,6 +12,7 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Configuration //声其是配置类
@@ -22,39 +23,50 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private MyUserDetailsService myUserDetailsService;
 
-    @Autowired
-    MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
+//    @Autowired
+//    MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
 
-    //配置忽略拦截的资源,主要是一些静态页面资源和构成页面所必要的js文件
-//    @Override
-//    public void configure(WebSecurity web) throws Exception {
-//        web.ignoring().antMatchers("/css/**");
-//    }
+
+   // 配置忽略拦截的资源,主要是一些静态页面资源和构成页面所必要的js文件
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring().antMatchers("/css/**","/assets/**","/data/**","/fcds/**","/js/**");
+    }
+    //创建一个密码 bean
+    @Bean
+    public PasswordEncoder passwordEncoder() {
+        return NoOpPasswordEncoder.getInstance();
+    }
     //配置访问控制
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         //  允许所有用户访问"/"和"/index.html"
         http.authorizeRequests()
-                .antMatchers( "/assets/**","/data/**","/fcds/**","/js/**","/api/login").permitAll()
-                .anyRequest().authenticated()   // 其他地址的访问均需验证权限
-                .and()
+                .antMatchers( "/","/api/login").permitAll()
+                .anyRequest().authenticated()
+                .and()   // 其他地址的访问均需验证权限
                 .formLogin()
-                .loginPage("/api/login")
-//                .successHandler(myAuthenticationSuccessHandler) //  登录页
-                .failureUrl("/api/500").permitAll() //登录失败页面
+                .defaultSuccessUrl("/production/index/1/0",true)
+                //  登录页
+                .failureUrl("/api/500") //登录失败页面
                 .and()
                 .logout()
                 .logoutSuccessUrl("/api/login");
     }
-    //配置密码校验
+
+    //配置密码校验,从数据库查询
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth.userDetailsService(myUserDetailsService).passwordEncoder(passwordEncoder());
     }
 
-    //创建一个密码 bean
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+     //配置密码校验，从内存中查询
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication()
+//                .withUser("admin")
+//                .password(new BCryptPasswordEncoder().encode("123456"))
+//                .roles("admin");
+//    }
+
 }

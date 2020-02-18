@@ -1,6 +1,7 @@
 package com.cnlive.oicc.mapper;
 
 import com.cnlive.oicc.entity.TPermission;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
@@ -11,6 +12,7 @@ import java.util.List;
  * PS: Not easy to write code, please indicate.
  */
 public interface TPermissionMapper {
-    List<TPermission> getPermissionsByRoleCode(String rolecode);
+    @Select("select * from t_permission where id=#{rolecode}")
+    List<TPermission> getPermissionsByRoleCode(int rolecode);
 
 }
