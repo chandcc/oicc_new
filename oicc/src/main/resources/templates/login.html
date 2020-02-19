@@ -12,17 +12,18 @@
             <img src="http://yweb3.cnliveimg.com/sites/eswc/170814185008076_952.jpg" style="height: 100%;width: 100%;"/>
         </h1>
 
-        <form name="loginform" id="loginform" action="" method="post">
+        <form   method="post"  action="/api/tologin">
             <p>
-                <label for="user_login">用户名<br/>
-                    <input name="name" id="user_login" type="text" class="input" value="" required/></label>
+                <label for="user_login">用户名<br>
+                    <input type="text" id="username" name="username"  placeholder="Username" class="input"  aria-required="true"></label>
             </p>
             <p>
-                <label for="user_pass">密码<br/>
-                    <input type="password" name="password" id="user_pass" class="input" value=""/></label>
+                <label for="user_pass">密码<br>
+                    <input type="password" id="password" name="password"  class="input" placeholder="Password" required=""></label>
             </p>
             <p class="submit">
-                <input type="button" name="wp-submit" id="wp-submit" class="btn btn-orange btn-block" value="登录"/>
+                <button class="btn btn-orange btn-block" type="submit">登录</button>
+                <!--<input type="button" name="wp-submit" id="wp-submit" class="btn btn-orange btn-block" value="登录">-->
             </p>
         </form>
         <p id="nav">

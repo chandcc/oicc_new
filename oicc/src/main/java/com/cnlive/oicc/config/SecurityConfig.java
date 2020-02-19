@@ -44,12 +44,23 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()   // 其他地址的访问均需验证权限
                 .formLogin()
-                .defaultSuccessUrl("/production/index/1/0",true)
                 //  登录页
+                .loginPage("/api/login")
+                //指定自定义form表单请求的路径
+                .loginProcessingUrl("/api/tologin")
+                //登录成功跳转路径
+                .defaultSuccessUrl("/production/index/1/0",true)
                 .failureUrl("/api/500") //登录失败页面
                 .and()
                 .logout()
                 .logoutSuccessUrl("/api/login");
+        //默认都会产生一个hiden标签 里面有安全相关的验证 防止请求伪造 这边我们暂时不需要 可禁用掉
+        http .csrf().disable();
+
+        /*这里值的注意的是表单的用户名name和password输入框的name=""要和security里面的验证的对应:
+        name="username";name="password",否则无法识别,另外action="/authentication/form"要与.loginProcessingUrl("/authentication/form")相对应,
+        原因为:由于security是由UsernamePasswordAuthenticationFilter这个类定义登录的,里面默认是/login路径,我们要让他用我们的/authentication/form路径,
+        就需要配置.loginProcessingUrl("/authentication/form")*/
     }
 
     //配置密码校验,从数据库查询
