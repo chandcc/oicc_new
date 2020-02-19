@@ -53,6 +53,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .failureUrl("/api/500") //登录失败页面
                 .and()
                 .logout()
+                //出发注销操作的url
+                .logoutUrl("/api/tologout")
                 .logoutSuccessUrl("/api/login");
         //默认都会产生一个hiden标签 里面有安全相关的验证 防止请求伪造 这边我们暂时不需要 可禁用掉
         http .csrf().disable();
