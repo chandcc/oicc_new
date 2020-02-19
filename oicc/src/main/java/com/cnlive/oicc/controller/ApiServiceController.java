@@ -50,7 +50,7 @@ public class ApiServiceController {
     private Logger logger = Logger.getLogger(ApiServiceController.class);
 
     @RequestMapping("/index")
-    public String index(){
+    public String index() {
         return "api/index";
     }
 
@@ -66,6 +66,7 @@ public class ApiServiceController {
     public String error() {
         return "common/500";
     }
+
     /**
      * 登录
      */
@@ -210,7 +211,7 @@ public class ApiServiceController {
             if (StringUtils.isEmpty(mobile))
                 mobile = String.valueOf(request.getSession().getAttribute("userName"));
 
-            Map<String, Object> map = UserLogService.me.sendMobileVcode(mobile);
+            Map<String, Object> map = userLogService.sendMobileVcode(mobile);
             String errorCode = String.valueOf(map.get("errorCode"));
             String errorMsg = String.valueOf(map.get("errorMessage"));
 
@@ -238,7 +239,7 @@ public class ApiServiceController {
             if (Constants.EMAIL_TYPE.equals(type)) {
                 return userLogService.regByEmail(mobile, userPwd, nickname);
             } else {
-                Map<String, Object> reponse = UserLogService.me.sendRegistRequest(mobile, userPwd, vCode, uuid, frmId);
+                Map<String, Object> reponse = userLogService.sendRegistRequest(mobile, userPwd, vCode, uuid, frmId);
                 String errorCode = String.valueOf(reponse.get("errorCode"));
                 String errorMsg = String.valueOf(reponse.get("errorMessage"));
 
@@ -418,7 +419,7 @@ public class ApiServiceController {
      */
     @RequestMapping("/emailPwd")
     @ResponseBody
-    public String emailPwd(HttpServletRequest request, HttpServletResponse response, String email, String vcode,Model model) {
+    public String emailPwd(HttpServletRequest request, HttpServletResponse response, String email, String vcode, Model model) {
         try {
             if (StringUtils.isEmpty(email) || StringUtils.isEmpty(vcode)) {
                 //setAttr("msg","该链接无效");

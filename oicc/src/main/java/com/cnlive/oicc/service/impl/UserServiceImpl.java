@@ -197,6 +197,7 @@ public class UserServiceImpl implements UserService {
      * @param username
      * @return
      */
+    @Override
     public TUser getUserByName(String username){
         return tUserMapper.getUserByName(username);
     }
