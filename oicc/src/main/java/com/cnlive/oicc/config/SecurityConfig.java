@@ -60,9 +60,9 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         http .csrf().disable();
 
         /*这里值的注意的是表单的用户名name和password输入框的name=""要和security里面的验证的对应:
-        name="username";name="password",否则无法识别,另外action="/authentication/form"要与.loginProcessingUrl("/authentication/form")相对应,
-        原因为:由于security是由UsernamePasswordAuthenticationFilter这个类定义登录的,里面默认是/login路径,我们要让他用我们的/authentication/form路径,
-        就需要配置.loginProcessingUrl("/authentication/form")*/
+        name="username";name="password",否则无法识别,另外action="/api/tologin"要与.loginProcessingUrl("/api/tologin")相对应,
+        原因为:由于security是由UsernamePasswordAuthenticationFilter这个类定义登录的,里面默认是/login路径,我们要让他用我们的/api/tologin路径,
+        就需要配置.loginProcessingUrl("/api/tologin")  同理，登出也一样*/
     }
 
     //配置密码校验,从数据库查询
