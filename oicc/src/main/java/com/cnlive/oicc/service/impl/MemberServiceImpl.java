@@ -44,7 +44,8 @@ public class MemberServiceImpl implements MemberService {
                 member.setInsertDateJs(CommonUtils.getCurrentTimestamp());
                 member.setCreateDateJs(CommonUtils.getCurrentTimestamp());
             }
-            int i = tMemberMapper.insert(member);
+//            int i = tMemberMapper.insert(member);
+            int i =tMemberMapper.insertSelective(member);
             return i > 0 ? true : false;
         } else {
             TMember tMember = tMembers.get(0);

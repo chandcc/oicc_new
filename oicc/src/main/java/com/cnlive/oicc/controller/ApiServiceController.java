@@ -1,22 +1,25 @@
 package com.cnlive.oicc.controller;
 
 import com.alibaba.druid.util.StringUtils;
+import com.cnlive.oicc.bean.ResultBean;
 import com.cnlive.oicc.entity.TEmailPwd;
 import com.cnlive.oicc.entity.TEmailType;
-import com.cnlive.oicc.bean.ResultBean;
 import com.cnlive.oicc.entity.TMember;
-import com.cnlive.oicc.service.MemberService;
 import com.cnlive.oicc.service.EmailPwdService;
 import com.cnlive.oicc.service.EmailTypeService;
+import com.cnlive.oicc.service.MemberService;
 import com.cnlive.oicc.service.UserLogService;
 import com.cnlive.oicc.utils.CommonUtils;
 import com.cnlive.oicc.utils.Constants;
 import com.cnlive.oicc.utils.UnifyPay;
+import com.qiniu.util.Auth;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.thymeleaf.context.IWebContext;
 import org.thymeleaf.context.WebContext;
 import org.thymeleaf.spring5.view.ThymeleafViewResolver;
@@ -67,6 +70,21 @@ public class ApiServiceController {
         return "common/500";
     }
 
+    @RequestMapping("/getToken")
+    @ResponseBody
+    public ResultBean getToken(HttpServletRequest request,HttpServletResponse response) {
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        response.setHeader("Access-Control-Allow-Headers", "Requested-With");
+        response.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
+        Map<String, String> map = new HashMap<String, String>();
+        Auth auth = Auth.create(Constants.QINIU_ACCESS_KEY, Constants.QINIU_SECRE_KEY);
+        String upToken = auth.uploadToken(Constants.QINIU_BUCKET);
+        map.put("domian", Constants.QINIU_DOMIAN);
+        map.put("token", upToken);
+        return(new ResultBean(0, "成功", map));
+
+    }
+
     /**
      * 登录
      */
@@ -101,6 +119,7 @@ public class ApiServiceController {
             long time2 = date2.getTime();
             logger.info("登录请求时间=====" + (time2 - time1));
             Map<String, String> data = (Map<String, String>) resMap.get("data");
+            //登录成功
             if ("0".equals(errcode)) {
                 userLogService.setUserLoginCookie(data, response);
                 userId = data.get("uid");
@@ -125,6 +144,7 @@ public class ApiServiceController {
             }
         } catch (Exception e) {
             logger.error("登录异常,用户名:" + userName, e);
+            e.printStackTrace();
             return new ResultBean(-1, "登录异常", null);
         }
 
@@ -141,42 +161,45 @@ public class ApiServiceController {
         try {
             Cookie[] cookies = request.getCookies();
             uid = CommonUtils.getCookieValue("cnliveUserId", cookies);
+            if (uid != null && uid !=""){
+                TMember member = memberService.findByEncryptID(uid);
+                if (member != null) {
+                    Object tableValue = null;
+                    if (!StringUtils.isEmpty(type)) {
+                        String tableName = "";
+                        if ("0".equals(type)) {
+                            tableName = "wcbd";
+                            tableValue = member.getWcbd();
+                            if (tableValue == null || "0".equals(tableValue.toString())) {
+                                member.setWcbd(1);
+                                memberService.saveOrUpdate(member, type);
+                            }
+                        } else if ("1".equals(type)) {
+                            tableName = "ycip";
+                            tableValue = member.getYcip();
+                            if (tableValue == null || "0".equals(tableValue.toString())) {
+                                member.setYcip(1);
+                                memberService.saveOrUpdate(member, type);
+                            }
+                        } else if ("2".equals(type)) {
+                            tableName = "jscy";
+                            tableValue = member.getJscy();
+                            if (tableValue == null || "0".equals(tableValue.toString())) {
+                                member.setJscy(1);
+                                memberService.saveOrUpdate(member, type);
+                            }
+                        }
 
-            TMember member = memberService.findByEncryptID(uid);
-            if (member != null) {
-                Object tableValue = null;
-                if (!StringUtils.isEmpty(type)) {
-                    String tableName = "";
-                    if ("0".equals(type)) {
-                        tableName = "wcbd";
-                        tableValue = member.getWcbd();
-                        if (tableValue == null || "0".equals(tableValue.toString())) {
-                            member.setWcbd(1);
-                            memberService.saveOrUpdate(member, type);
-                        }
-                    } else if ("1".equals(type)) {
-                        tableName = "ycip";
-                        tableValue = member.getYcip();
-                        if (tableValue == null || "0".equals(tableValue.toString())) {
-                            member.setYcip(1);
-                            memberService.saveOrUpdate(member, type);
-                        }
-                    } else if ("2".equals(type)) {
-                        tableName = "jscy";
-                        tableValue = member.getJscy();
-                        if (tableValue == null || "0".equals(tableValue.toString())) {
-                            member.setJscy(1);
-                            memberService.saveOrUpdate(member, type);
-                        }
                     }
-
+                    return new ResultBean(0, "已登录", member);
+                } else {
+                    return new ResultBean(-1, "未登录", null);
                 }
-                return new ResultBean(0, "已登录", member);
-            } else {
-                return new ResultBean(-1, "未登录", null);
             }
+            return new ResultBean(-1, "未登录", null);
         } catch (Exception e) {
             logger.error("验证登录异常,token=:" + uid, e);
+            e.printStackTrace();
             return new ResultBean(-1, "验证登录异常", null);
         }
 

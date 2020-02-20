@@ -46,7 +46,8 @@ public class UserLogServiceImpl implements UserLogService {
 
     public void setCookieOfCnliveUserId(String userId, HttpServletResponse response) {
         Cookie idcookie = new Cookie("cnliveUserId", userId);
-        idcookie.setDomain(".cnlive.com");
+        //setDomain暂时设为localhost，这两个的作用刚看了一下博客https://www.jianshu.com/p/122606ffcc47
+        idcookie.setDomain("localhost");
         idcookie.setPath("/");
         idcookie.setMaxAge(3600);
         response.addCookie(idcookie);
@@ -54,7 +55,7 @@ public class UserLogServiceImpl implements UserLogService {
 
     public void setCookieOfCnliveUserSmallFacepath(String cnliveUserSmallFacepath, HttpServletResponse response) {
         Cookie smallFacepathcookie = new Cookie("cnliveUserSmallFacepath", cnliveUserSmallFacepath);
-        smallFacepathcookie.setDomain(".cnlive.com");
+        smallFacepathcookie.setDomain("localhost");
         smallFacepathcookie.setPath("/");
         smallFacepathcookie.setMaxAge(31536000);
         response.addCookie(smallFacepathcookie);
@@ -62,7 +63,7 @@ public class UserLogServiceImpl implements UserLogService {
 
     public void setCookieOfCnliveUserName(String cnliveUserName, HttpServletResponse response) {
         Cookie namecookie = new Cookie("cnliveUserName", cnliveUserName);
-        namecookie.setDomain(".cnlive.com");
+        namecookie.setDomain("localhost");
         namecookie.setPath("/");
         namecookie.setMaxAge(31536000);
         response.addCookie(namecookie);
@@ -70,19 +71,19 @@ public class UserLogServiceImpl implements UserLogService {
 
     public void delteUserLoginCookie(HttpServletResponse response) {
         Cookie idcookie = new Cookie("cnliveUserId", null);
-        idcookie.setDomain(".cnlive.com");
+        idcookie.setDomain("localhost");
         idcookie.setPath("/");
         idcookie.setMaxAge(0);
         response.addCookie(idcookie);
 
         Cookie smallFacepathcookie = new Cookie("cnliveUserSmallFacepath", null);
-        smallFacepathcookie.setDomain(".cnlive.com");
+        smallFacepathcookie.setDomain("localhost");
         smallFacepathcookie.setPath("/");
         smallFacepathcookie.setMaxAge(0);
         response.addCookie(smallFacepathcookie);
 
         Cookie namecookie = new Cookie("cnliveUserName", null);
-        namecookie.setDomain(".cnlive.com");
+        namecookie.setDomain("localhost");
         namecookie.setPath("/");
         namecookie.setMaxAge(0);
         response.addCookie(namecookie);

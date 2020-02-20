@@ -24,11 +24,10 @@ public class CommonUtils {
      */
     public static String getCookieValue(String name, Cookie[] cookies) {
         if (cookies != null) {
-            for (Cookie cookie : cookies) {
-                if (cookie.getName().equals(name)) {
-                    return cookie.getValue();
+            for (int i=0;i<cookies.length;i++){
+                if (cookies[i].getName().equals(name)) {
+                    return cookies[i].getValue();
                 }
-                return null;
             }
         }
         return null;

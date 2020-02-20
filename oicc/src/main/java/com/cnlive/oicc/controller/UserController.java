@@ -155,19 +155,7 @@ public class UserController {
 	}*/
 
 
-    @RequestMapping("/getToken")
-    public ResultBean getToken(HttpServletRequest request,HttpServletResponse response) {
-		response.setHeader("Access-Control-Allow-Origin", "*");
-		response.setHeader("Access-Control-Allow-Headers", "Requested-With");
-		response.setHeader("Access-Control-Allow-Methods", "GET,POST,OPTIONS");
-        Map<String, String> map = new HashMap<String, String>();
-        Auth auth = Auth.create(Constants.QINIU_ACCESS_KEY, Constants.QINIU_SECRE_KEY);
-        String upToken = auth.uploadToken(Constants.QINIU_BUCKET);
-        map.put("domian", Constants.QINIU_DOMIAN);
-        map.put("token", upToken);
-        return(new ResultBean(0, "成功", map));
 
-    }
 
 
 }
